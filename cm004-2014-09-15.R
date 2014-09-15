@@ -12,3 +12,7 @@ plot(lifeExp~ gdpPercap, gDat)
 plot(lifeExp ~ log(gdpPercap), gDat)
 
 summary(gDat$lifeExp)
+levels(gDat$continent)
+nlevels(gDat$continent)
+table(gDat$continent)
+barplot(table(gDat$continent))
