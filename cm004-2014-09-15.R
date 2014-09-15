@@ -11,3 +11,4 @@ plot(gDat[, 5] ~ gDat[, 2])  # don't do this!
 plot(lifeExp~ gdpPercap, gDat)
 plot(lifeExp ~ log(gdpPercap), gDat)
 
+summary(gDat$lifeExp)

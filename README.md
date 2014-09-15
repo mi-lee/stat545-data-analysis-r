@@ -21,3 +21,5 @@ I used Markdown for my Stat404 assignments, so it's not too new - but this is my
 
 ** testing** 
 
+$$ A_B^C + B/A $$
+
