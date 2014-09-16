@@ -19,7 +19,7 @@ zz_michelle_lee-coursework
 I used Markdown for my Stat404 assignments, so it's not too new - but this is my first time using Github. 
 
 
-** testing** 
+**testing** 
 
 $$ A_B^C + B/A $$
 
