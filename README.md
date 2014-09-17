@@ -1,27 +1,26 @@
+---
+output: html_document
+---
 Michelle Lee's Repository
 ==========================
-
-"This is the repository of Michelle Lee"
-
-(done from RStudio - pull, edited, saved, and committed)
-
-
-
 # Intro
 
-1. **Intro**: My name is Michelle and I'm a 4th year UBC student. 
+* My name is Michelle and I'm a 4th year UBC student. 
 
-## Link to Site
-[STAT545A ](http://stat545-ubc.github.io/hw01_edit-README.html)
+* **Here's a link to the site:** [STAT545A](http://stat545-ubc.github.io/hw01_edit-README.html)
 
-### Reflections
+## My experience with Markdown
 
-I use Markdown for my Stat404 assignments, so it's not too new - but this is my first time using Github. 
+I use Markdown for my Stat404 assignments, so it's not too new - but this is my first time using Github.
 
+### How I made this
 
-**testing** 
+* Cloned the file, edited on RStudio
+* Committed, pushed from RStudio
+* Tried to edit on both RStudio and the browser at the same time... lesson learned. 
 
 $$ A_B^C + B/A $$
 
-2. LaTeX equations are not showing up... the Stat545a question thread has more details on how to make it work.
+*Unfortunately the equations aren't showing up - the discussion board has more info on that*
 
+![picture](time.png)
