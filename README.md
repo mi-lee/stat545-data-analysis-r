@@ -1,6 +1,3 @@
----
-output: html_document
----
 Michelle Lee's Repository
 ==========================
 # Intro
@@ -23,4 +20,10 @@ $$ A_B^C + B/A $$
 
 *Unfortunately the equations aren't showing up - the discussion board has more info on that*
 
-![picture](time.png)
+
+Here's a picture
+
+
+
+
+![time spent formatting vs. analyzing](http://fosslien.com/analyst/seven.png)
