@@ -1,9 +1,7 @@
----
-title: 'HW2: Exploring Gapminder'
-author: "Michelle Lee"
-date: "September 22, 2014"
-output: html_document
----
+HW2: Exploring Gapminder
+===============================
+## Michelle Lee
+### Sept 22, 2014
 
 
 ### Loading the dataset
