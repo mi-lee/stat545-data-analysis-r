@@ -9,7 +9,7 @@ Michelle Lee's Repository
 
 ## My experience with Markdown
 
-I use Markdown for my Stat404 assignments, so it's not too new - but this is my first time using Github.
+I use R Markdown for my Stat404 assignments, so it's not too new - but this is my first time using Github.
 
 ### How I made this
 
