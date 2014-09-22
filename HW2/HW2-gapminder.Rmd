@@ -8,8 +8,15 @@ HW2: Exploring Gapminder
 
 **Load the Gapminder data with read.delim() and read.table() without specifying args other than `file`. Do you get the same resulting object in your workspace?**
 
+```{r setup}
+# set global chunk options: images will be 7x5 inches
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+options(digits = 4)
+```
+
 I loaded the data -but got an error message when I try to use `read.table()`.
 ```{r, error=TRUE}
+
 gDelim <- read.delim("gapminderDataFiveYear.txt")
 gTable <- read.table("gapminderDataFiveYear.txt")
 ```
@@ -181,3 +188,9 @@ mapCountryData(gtdMap, nameColumnToPlot="lifeExp", mapRegion = "africa",catMetho
 * Playing around with ggplot2 was a great learning experience - I learned several formats in which certaom data could be presented easily and effectively, especially the line plots. 
 * As I mentioned earlier - reordering factors was the most frustrating task, and one I didn't manage to solve. 
 * Helpful tutorials I used include: Hadley Wickham's [documentation for ggplot](http://docs.ggplot2.org/0.9.3.1/geom_bar.html) and how to create a [chloropleth on rworldmap](http://stackoverflow.com/questions/22625119/choropleth-world-map).
+
+```{r compile, eval=FALSE}
+library(knitr)
+knit('HW2-gapminder.Rmd')
+```
+

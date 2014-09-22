@@ -62,6 +62,9 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <div id="loading-the-dataset" class="section level3">
 <h3>Loading the dataset</h3>
 <p><strong>Load the Gapminder data with read.delim() and read.table() without specifying args other than <code>file</code>. Do you get the same resulting object in your workspace?</strong></p>
+<pre class="r"><code># set global chunk options: images will be 7x5 inches
+knitr::opts_chunk$set(fig.width=7, fig.height=5)
+options(digits = 4)</code></pre>
 <p>I loaded the data -but got an error message when I try to use <code>read.table()</code>.</p>
 <pre class="r"><code>gDelim &lt;- read.delim(&quot;gapminderDataFiveYear.txt&quot;)
 gTable &lt;- read.table(&quot;gapminderDataFiveYear.txt&quot;)</code></pre>
@@ -248,6 +251,8 @@ af &lt;- ggplot(countries, aes(x=year, y=lifeExp, colour=country)) + geom_line()
 <li>As I mentioned earlier - reordering factors was the most frustrating task, and one I didn’t manage to solve.</li>
 <li>Helpful tutorials I used include: Hadley Wickham’s <a href="http://docs.ggplot2.org/0.9.3.1/geom_bar.html">documentation for ggplot</a> and how to create a <a href="http://stackoverflow.com/questions/22625119/choropleth-world-map">chloropleth on rworldmap</a>.</li>
 </ul>
+<pre class="r"><code>library(knitr)
+knit('HW2-gapminder.Rmd')</code></pre>
 </div>
 </div>
 </div>
