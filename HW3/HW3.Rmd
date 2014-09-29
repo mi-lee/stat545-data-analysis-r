@@ -164,7 +164,7 @@ knitr::kable(asia.relative.le)
 
 Now, we can try plotting this. The discrete colour scale makes it easy to see exactly when countries escaped the bottom quartile. (Although it somewhat resembles Snake)
 
-```{r}
+```{r, fig.width=10, fig.height=10}
 ggplot(asia.le, aes(x = year, y = lifeExp, colour = lifeExp < asia.1q)) + 
   geom_point(aes(group=year)) + facet_wrap(~ country) + 
   ggtitle("Life expectancy and continential 1st quartile over time") + 
