@@ -55,9 +55,12 @@ The plot of minimum and maximum GDP is below.
 
 
 ```r
-ggplot(min.max, aes(x = continent, y = value, fill = continent)) + geom_point(lwd=3) +  # just the min and max vals
-  guides(fill = F) + theme_minimal() + ggtitle("GDP per capita by Continent") + geom_line(aes(colour=continent)) + 
-  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + xlab("Continent") + ylab("GDP per capita") + theme(legend.position="none")
+ggplot(min.max, aes(x = continent, y = value, fill = continent)) + 
+  geom_point(lwd=3) +  # just the min and max vals
+  guides(fill = F) + theme_minimal() + ggtitle("GDP per capita by Continent") + 
+  geom_line(aes(colour=continent)) + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + 
+  xlab("Continent") + ylab("GDP per capita") + theme(legend.position="none")
 ```
 
 ![plot of chunk unnamed-chunk-4](./HW3_files/figure-html/unnamed-chunk-4.png) 
@@ -96,9 +99,11 @@ A typical boxplot that makes it immediately clear the spread of GDP within conti
 
 
 ```r
-ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + geom_boxplot() +  guides(fill = F) + 
-  theme_minimal()+ scale_colour_brewer() + scale_y_log10() + ggtitle("GDP per capita by Continent") + 
-  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + xlab("Continent") + ylab("GDP per capita")
+ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + 
+  geom_boxplot() +  guides(fill = F) + theme_minimal()+ scale_colour_brewer() + 
+  scale_y_log10() + ggtitle("GDP per capita by Continent") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + 
+  xlab("Continent") + ylab("GDP per capita")
 ```
 
 ![plot of chunk unnamed-chunk-6](./HW3_files/figure-html/unnamed-chunk-6.png) 
@@ -112,12 +117,13 @@ A dot plot, while not as obvious, shows where the data points are clumped. `jitt
 ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + 
   geom_point(alpha=3/4, aes(colour=continent), position="jitter") + # jitter spreads out the points 
   guides(fill = F) + theme_minimal() + scale_y_log10()+ ggtitle("GDP per capita by Continent") + 
-  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + xlab("Continent") + ylab("GDP per capita")
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + 
+  xlab("Continent") + ylab("GDP per capita")
 ```
 
 ![plot of chunk unnamed-chunk-7](./HW3_files/figure-html/unnamed-chunk-7.png) 
 
-I'm fairly new to ggplot2, and still can't stop admiring how beautiful these graphs are with such minimal effort. In case you've forgotten, here's the same boxplot in Excel 2003 (note: this theme must be used for ironic purposes only)
+I'm fairly new to ggplot2, and still can't stop admiring how beautiful these graphs are with such minimal effort. In case you've forgotten, here's the **same boxplot in Excel 2003** (note: this theme must be used for *ironic* purposes only)
 
 
 ```r
@@ -192,8 +198,10 @@ asia.le <- within(asia.le, country <- reorder(country, lifeExp)) # need to separ
 Why the re-ordering of factors? I reordered it so the plots were organized, in ascending order, the life expectancy in 1950.
 
 ```r
-ggplot(asia.le, aes(y = lifeExp, x = year)) + geom_point(alpha = (1/3), size = 3, aes(color=country)) + 
-  facet_wrap(~ country, ncol=5, nrow=8) + ggtitle("Life Expectancy of Asian Countries from 1950 - 2010") + 
+ggplot(asia.le, aes(y = lifeExp, x = year)) + 
+  geom_point(alpha = (1/3), size = 3, aes(color=country)) + 
+  facet_wrap(~ country, ncol=5, nrow=8) + 
+  ggtitle("Life Expectancy of Asian Countries from 1950 - 2010") + 
   theme(legend.position="none", plot.title = element_text(size = 15, face="bold")) + 
   xlab("Year") + ylab("Life Expectancy")
 ```
@@ -258,10 +266,11 @@ Now, we can try plotting this. The discrete colour scale makes it easy to see ex
 
 
 ```r
-ggplot(asia.le, aes(x = year, y = lifeExp, colour = lifeExp < asia.1q)) + geom_point(aes(group=year)) + 
-  facet_wrap(~ country) + ggtitle("Life expectancy and continential 1st quartile over time") + 
-  theme(legend.position="none", plot.title = element_text(size = 15, face="bold")) + xlab("Year") + 
-  ylab("Life Expectancy") + scale_color_economist()
+ggplot(asia.le, aes(x = year, y = lifeExp, colour = lifeExp < asia.1q)) + 
+  geom_point(aes(group=year)) + facet_wrap(~ country) + 
+  ggtitle("Life expectancy and continential 1st quartile over time") + 
+  theme(legend.position="none", plot.title = element_text(size = 15, face="bold")) + 
+  xlab("Year") + ylab("Life Expectancy") + scale_color_economist()
 ```
 
 ![plot of chunk unnamed-chunk-15](./HW3_files/figure-html/unnamed-chunk-15.png) 
