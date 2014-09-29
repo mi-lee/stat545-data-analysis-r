@@ -1,6 +1,6 @@
 Michelle Lee's Repository
 ==========================
-# Intro
+## Intro
 
 * My name is Michelle and I'm a 4th year UBC student. I like cycling and fixing typography.
 
