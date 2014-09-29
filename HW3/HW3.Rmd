@@ -133,7 +133,7 @@ asia.le <- within(asia.le, country <- reorder(country, lifeExp)) # need to separ
 ```
 
 Why the re-ordering of factors? I reordered it so the plots were organized, in ascending order, the life expectancy in 1950.
-```{r, fig.width=8, fig.height=8}
+```{r, fig.width=8, fig.height=10}
 ggplot(asia.le, aes(y = lifeExp, x = year)) + 
   geom_point(alpha = (1/3), size = 3, aes(color=country)) + 
   facet_wrap(~ country, ncol=5, nrow=8) + 
