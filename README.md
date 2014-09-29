@@ -8,7 +8,7 @@ Michelle Lee's Repository
 
 * Here's a link to **[Homework 3](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW3)**.
 
-* **Here's a link to the site:** [STAT545A](http://stat545-ubc.github.io/hw01_edit-README.html)
+* Here's a link to the site: **[STAT545A](http://stat545-ubc.github.io/hw01_edit-README.html)**.
 
 ## My experience with Markdown
 
