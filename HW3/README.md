@@ -1,6 +1,5 @@
-HW3: dplyr and data exploration
+HW3: Summary of Files
 ==========================
-# Summary of Files
 
 * This is the [Markdown file](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW3/HW3.md);
 * and the [R Markdown file](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW3/HW3.Rmd);
