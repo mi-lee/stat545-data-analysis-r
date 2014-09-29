@@ -3,7 +3,8 @@ Michelle Lee's Repository
 # Intro
 
 * My name is Michelle and I'm a 4th year UBC student. 
-* **Here's a link to [Homework 2](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW2).**
+* Here's a link to [Homework 2](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW2).
+* Here's a link to [Homework 3](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW3).
 
 * **Here's a link to the site:** [STAT545A](http://stat545-ubc.github.io/hw01_edit-README.html)
 
@@ -23,7 +24,6 @@ $$ A_B^C + B/A $$
 
 
 Here's a picture
-
 
 
 

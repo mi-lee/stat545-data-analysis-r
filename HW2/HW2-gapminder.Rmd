@@ -184,4 +184,25 @@ mapCountryData(gtdMap, nameColumnToPlot="lifeExp", mapRegion = "africa",catMetho
 * Helpful tutorials I used include: Hadley Wickham's [documentation for ggplot](http://docs.ggplot2.org/0.9.3.1/geom_bar.html) and how to create a [chloropleth on rworldmap](http://stackoverflow.com/questions/22625119/choropleth-world-map).
 
 
+yearMin <- min(gDat$year)
+jFun <- function(x) {
+  estCoefs <- coef(lm(lifeExp ~ I(year - yearMin), x))
+  names(estCoefs) <- c("intercept", "slope")
+  return(estCoefs)
+  }
+jCoefs <- ddply(gDat, ~ country + continent, jFun)
+head(levels(jCoefs$country)) # alphabetical order
+jCoefs <- within(jCoefs, country <- reorder(country, intercept))
+head(levels(jCoefs$country))
+
+testData=gDat[,c(1,2,4,5)]
+head(levels(testData$country))
+testData <- within(testData, country <- reorder(country, lifeExp))
+head(levels(testData$country))
+head(arrange(testData, country))
+tail(arrange(testData, country))
+
+aDat <- subset(testData, subset=(continent=="Asia"))
+asia <- ggplot(aDat, aes(y = lifeExp, x = year))
+asia + geom_point(alpha = (1/3), size = 3, aes(color=country)) + facet_wrap(~ country, ncol=6, nrow=6) + theme(legend.position="none")
 
