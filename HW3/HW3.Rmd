@@ -43,14 +43,15 @@ The plot of minimum and maximum GDP is below.
 ggplot(min.max, aes(x = continent, y = value, fill = continent)) + 
   geom_point(lwd=3) + # the min and max values
   geom_line(aes(colour=continent)) + # the line to connect the values
-  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + 
-  guides(fill = F) + theme_minimal() + ggtitle("GDP per capita by Continent") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + guides(fill = F) 
++ theme_minimal() + ggtitle("GDP per capita by Continent") + 
   xlab("Continent") + ylab("GDP per capita") + theme(legend.position="none")
 ```
 
-[Andrew Macdonald was right](https://twitter.com/polesasunder/status/464132152347475968) -people only read graphs instead of charts, myself included. You can see right away the huge variation in GDP per capita within Africa and Asia. 
+[Andrew Macdonald was right](https://twitter.com/polesasunder/status/464132152347475968) - people only read graphs instead of charts, myself included. You can see right away the huge variation in GDP per capita within Africa and Asia. 
 
 I made this plot as simple as possible because the task was to find the minimum and maximum. I originally plotted a boxplot, but a boxplot has plenty of information that this task doesn't need. 
+
 
 
 ## Task 2: Look at the spread of GDP per capita within the continents.
@@ -90,6 +91,8 @@ ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + geom_boxplot
 ```
 
 Never again.
+
+
 
 
 ## Task 3: How is life expectancy changing over time on different continents?
