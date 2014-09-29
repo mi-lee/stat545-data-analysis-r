@@ -2,13 +2,19 @@ Michelle Lee's Repository
 ==========================
 # Intro
 
-* My name is Michelle and I'm a 4th year UBC student. 
+* My name is Michelle and I'm a 4th year UBC student. I like cycling and fixing typography.
 
 * Here's a link to **[Homework 2](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW2)**.
 
 * Here's a link to **[Homework 3](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW3)**.
 
-* Here's a link to the site: **[STAT545A](http://stat545-ubc.github.io/hw01_edit-README.html)**.
+* And here's a link to the site: **[STAT 545A](http://stat545-ubc.github.io/hw01_edit-README.html)**.
+
+
+**Here's a picture**: 
+
+![time spent formatting vs. analyzing](http://fosslien.com/analyst/seven.png)
+
 
 ## My experience with Markdown
 
@@ -24,9 +30,3 @@ $$ A_B^C + B/A $$
 
 *Unfortunately the equations aren't showing up - the discussion board has more info on that*
 
-
-Here's a picture
-
-
-
-![time spent formatting vs. analyzing](http://fosslien.com/analyst/seven.png)
