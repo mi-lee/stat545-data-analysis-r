@@ -44,7 +44,7 @@ To show clearly the minimum and maximum, I used `reshape2` to melt the table.
 
 ```r
 min.max= gdp.tbl %>%
-  melt
+  melt # combine the max and min values, organized by continent
 ```
 
 ```
@@ -55,14 +55,16 @@ The plot of minimum and maximum GDP is below.
 
 
 ```r
-ggplot(min.max, aes(x = continent, y = value, fill = continent)) + geom_point(lwd=3) + guides(fill = F) + 
-  theme_minimal() + ggtitle("GDP per capita by Continent") + geom_line(aes(colour=continent)) + 
+ggplot(min.max, aes(x = continent, y = value, fill = continent)) + geom_point(lwd=3) +  # just the min and max vals
+  guides(fill = F) + theme_minimal() + ggtitle("GDP per capita by Continent") + geom_line(aes(colour=continent)) + 
   theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + xlab("Continent") + ylab("GDP per capita") + theme(legend.position="none")
 ```
 
 ![plot of chunk unnamed-chunk-4](./HW3_files/figure-html/unnamed-chunk-4.png) 
 
-[Andrew Macdonald was right](https://twitter.com/polesasunder/status/464132152347475968) -people only read graphs instead of charts, myself included. You can see right away the huge variation in GDP per capita within Africa and Asia. 
+[Andrew Macdonald was right](https://twitter.com/polesasunder/status/464132152347475968) - people only read graphs instead of charts, myself included. You can see right away the huge variation in GDP per capita within Africa and Asia. 
+
+I made this plot as simple as possible because the task was to find the minimum and maximum. I originally plotted a boxplot, but a boxplot has plenty of information that this task doesn't need. 
 
 
 
@@ -94,30 +96,34 @@ A typical boxplot that makes it immediately clear the spread of GDP within conti
 
 
 ```r
-ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + geom_boxplot() +  guides(fill = F) +theme_minimal()+
-  scale_colour_brewer() + scale_y_log10() + ggtitle("GDP per capita by Continent") + theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + 
-  xlab("Continent") + ylab("GDP per capita")
+ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + geom_boxplot() +  guides(fill = F) + 
+  theme_minimal()+ scale_colour_brewer() + scale_y_log10() + ggtitle("GDP per capita by Continent") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + xlab("Continent") + ylab("GDP per capita")
 ```
 
 ![plot of chunk unnamed-chunk-6](./HW3_files/figure-html/unnamed-chunk-6.png) 
 
-A dot plot, while not as obvious, shows where the data are clumped. `jitter` makes it easier to see these dots. 
+From the boxplot, we can see the means, medians, ranges, quartiles, etc. all at once - definitely faster than looking at the table!
+
+A dot plot, while not as obvious, shows where the data points are clumped. `jitter` makes it easier to see these dots. 
 
 
 ```r
-ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + geom_point(alpha=3/4, aes(colour=continent), position="jitter") +  
-  guides(fill = F) +theme_minimal() + scale_y_log10()+ ggtitle("GDP per capita by Continent") + theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + 
-  xlab("Continent") + ylab("GDP per capita")
+ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + 
+  geom_point(alpha=3/4, aes(colour=continent), position="jitter") + # jitter spreads out the points 
+  guides(fill = F) + theme_minimal() + scale_y_log10()+ ggtitle("GDP per capita by Continent") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) + xlab("Continent") + ylab("GDP per capita")
 ```
 
 ![plot of chunk unnamed-chunk-7](./HW3_files/figure-html/unnamed-chunk-7.png) 
 
-I'm fairly new to ggplot2, and still can't stop admiring how beautiful these graphs are with such minimal effort. In case you've forgotten, here's the same graph in Excel 2003 (note: this theme must be used for ironic purposes only)
+I'm fairly new to ggplot2, and still can't stop admiring how beautiful these graphs are with such minimal effort. In case you've forgotten, here's the same boxplot in Excel 2003 (note: this theme must be used for ironic purposes only)
 
 
 ```r
-ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + geom_boxplot() +theme_excel()+ scale_colour_excel() + 
-  scale_fill_excel() + scale_y_log10()+ ggtitle("GDP per capita by Continent") + xlab("Continent") + ylab("GDP per capita")
+ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + geom_boxplot() + 
+  theme_excel()+ scale_colour_excel() + scale_fill_excel() + scale_y_log10() + 
+  ggtitle("GDP per capita by Continent") + xlab("Continent") + ylab("GDP per capita")
 ```
 
 ![plot of chunk unnamed-chunk-8](./HW3_files/figure-html/unnamed-chunk-8.png) 
@@ -125,9 +131,11 @@ ggplot(gtbl, aes(x = continent, y = gdpPercap, fill = continent)) + geom_boxplot
 Never again.
 
 
+
+
 ## Task 3: How is life expectancy changing over time on different continents?
 
-I used `dcast` to change the data from long to wide, to make it more readable. 
+My original data frame was in long format, which is good for analyzing data but not so much for readability. I used `dcast` to change the data from long to wide.
 
 ```r
 life.time <- gtbl %>%
@@ -156,19 +164,20 @@ knitr::kable(life.time.long)
 ## | 2007|  54.81|    73.61| 70.73|  77.65|   80.72|
 ```
 
-A comparison of life expectancy trends, by continent. 
+A comparison of life expectancy trends, by continent, again using `jitter` for the points to be more easily visible. 
 
 ```r
-ggplot(gtbl, aes(x = year, y = lifeExp, color = continent)) + geom_jitter(size = 1.5) + facet_wrap(~ continent) + 
-  ggtitle("Life Expectancy per Continent from 1950 - 2010") + theme(legend.position="none", plot.title = element_text(size = 15, face="bold")) + 
+ggplot(gtbl, aes(x = year, y = lifeExp, color = continent)) + geom_jitter(size = 1.5) + 
+  facet_wrap(~ continent) +  ggtitle("Life Expectancy per Continent from 1950 - 2010") + 
+  theme(legend.position="none", plot.title = element_text(size = 15, face="bold")) + # No legend 
   scale_color_discrete() + xlab("Year") + ylab("Life Expectancy")
 ```
 
 ![plot of chunk unnamed-chunk-10](./HW3_files/figure-html/unnamed-chunk-10.png) 
 
-Not only can we tell the rate of change in life expectancy, we can also see the variation.
+Not only can we tell the rate of change in life expectancy, we can also see the variation within continents. 
 
-## Task 7, though related to Task 3: How is life expectancy changing over time in Asia? 
+## Task 7 (Make your own!), though related to Task 3: How is life expectancy changing over time in Asia? 
 
 I strugged with this in HW2 on how to reorder factors. Thanks to Jenny's tutorial, I finally got it this time. The command had to be separated from the first `asia.le` data frame for the reordering of factors to work. 
 
@@ -185,16 +194,18 @@ Why the re-ordering of factors? I reordered it so the plots were organized, in a
 ```r
 ggplot(asia.le, aes(y = lifeExp, x = year)) + geom_point(alpha = (1/3), size = 3, aes(color=country)) + 
   facet_wrap(~ country, ncol=5, nrow=8) + ggtitle("Life Expectancy of Asian Countries from 1950 - 2010") + 
-  theme(legend.position="none", plot.title = element_text(size = 15, face="bold")) + xlab("Year") + ylab("Life Expectancy")
+  theme(legend.position="none", plot.title = element_text(size = 15, face="bold")) + 
+  xlab("Year") + ylab("Life Expectancy")
 ```
 
 ![plot of chunk unnamed-chunk-12](./HW3_files/figure-html/unnamed-chunk-12.png) 
 
+ggplot automatically organizes the graphs according to alphabetical order, which doesn't make sense if you want to compare country trends. I chose life expectancy in ascending order so that the rate of change was more obvious.
 
-## Task 4: Report the absolute and/or relative abundance of countries with low life expectancy over time by continent.
-### Compute some measure of worldwide life expectancy – you decide – a mean or median or some other quantile or perhaps your current age. The determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
 
-I will first try looking at the relative abundance of low life expectancies within Asia: which countries' life expectancies are below the continential median, and how many times over the years they were below. 
+## Task 5: Report the absolute and/or relative abundance of countries with low life expectancy over time.
+
+I will look at the relative abundance of low life expectancies within Asia: which countries' life expectancies are below the continential bottom quartile, and how many times over the years they were below. 
 
 
 ```r
@@ -243,7 +254,7 @@ knitr::kable(asia.relative.le)
 ## |Bahrain            |  1|
 ```
 
-Now, we can try plotting this. The discrete colour scale makes it easy to see which countries escaped the bottom quartile, and when.
+Now, we can try plotting this. The discrete colour scale makes it easy to see exactly when countries escaped the bottom quartile. (Although it somewhat resembles Snake)
 
 
 ```r
@@ -258,7 +269,7 @@ ggplot(asia.le, aes(x = year, y = lifeExp, colour = lifeExp < asia.1q)) + geom_p
 
 ## Report your process. 
 
-* The shortcut for `%>%` is Shift-Alt-> for Macs! Don't make the same mistake I did (using Command + option + m) which kept minimizing RStudio.
-* Jenny wasn't kidding when she said `magrittr` and `dplyr` would change our life. Complicated problems become trivial once I got the hang of using `tbl_df` and ` %>%`. 
+* The shortcut for `%>%` is Shift-Alt-> for Macs! Don't make the same mistake I did (using Command + option + m) which will minimize RStudio.
+* Jenny wasn't kidding when she said `magrittr` and `dplyr` would change our lives. Complicated problems became trivial once I got the hang of using `tbl_df` and ` %>%`. 
 * I had too much fun playing with Jeffrey Arnold's `ggthemes`. Documentation is [here.](https://github.com/jrnold/ggthemes)
-* ggplot2 is amazing. I'm still amazed by how quickly these graphs can be created, with intuitive colour scales and themes. The only issue I see with it is that there are quite a bit of small details that need tweaking, that are very difficult to fix in R itself. Nathan Yau's process is to make all graphics in R first and Illustrator after, and I think I will be following that procedure from now on. 
+* ggplot2 is amazing. I'm still amazed by how quickly these graphs can be created, with intuitive colour scales and themes. The only issue I see with it is that there are quite a bit of small details that need tweaking, that are very difficult to fix in R itself. [Nathan Yau's](flowingdata.com) process is to make all graphics in R first and Illustrator after, and I think I will be following that procedure from now on. 
