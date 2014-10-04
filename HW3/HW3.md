@@ -25,20 +25,18 @@ With `dplyr`, this task is straightforward. I used `knitr::kable` to automatical
 gdp.tbl=gtbl %>%
   group_by(continent) %>%
   summarise_each(funs(min, max), gdpPercap)
-knitr::kable(gdp.tbl) # use knitr:kable to automatically format the table 
+knitr::kable(gdp.tbl, format="markdown") # use knitr:kable to automatically format the table 
 ```
 
-```
-## 
-## 
-## |continent |     min|    max|
-## |:---------|-------:|------:|
-## |Africa    |   241.2|  21951|
-## |Americas  |  1201.6|  42952|
-## |Asia      |   331.0| 113523|
-## |Europe    |   973.5|  49357|
-## |Oceania   | 10039.6|  34435|
-```
+
+
+|continent |     min|    max|
+|:---------|-------:|------:|
+|Africa    |   241.2|  21951|
+|Americas  |  1201.6|  42952|
+|Asia      |   331.0| 113523|
+|Europe    |   973.5|  49357|
+|Oceania   | 10039.6|  34435|
 
 To show clearly the minimum and maximum, I used `reshape2` to melt the table.
 
@@ -80,20 +78,18 @@ We can use `summarise_each` to calculate GDP per capita in different ways.
 gdp.var <- gtbl %>%
   group_by(continent) %>%
   summarise_each(funs(mean, median, sd), gdpPercap)
-knitr::kable(gdp.var)
+knitr::kable(gdp.var, format="markdown")
 ```
 
-```
-## 
-## 
-## |continent |  mean| median|    sd|
-## |:---------|-----:|------:|-----:|
-## |Africa    |  2194|   1192|  2828|
-## |Americas  |  7136|   5466|  6397|
-## |Asia      |  7902|   2647| 14045|
-## |Europe    | 14469|  12082|  9355|
-## |Oceania   | 18622|  17983|  6359|
-```
+
+
+|continent |  mean| median|    sd|
+|:---------|-----:|------:|-----:|
+|Africa    |  2194|   1192|  2828|
+|Americas  |  7136|   5466|  6397|
+|Asia      |  7902|   2647| 14045|
+|Europe    | 14469|  12082|  9355|
+|Oceania   | 18622|  17983|  6359|
 
 A typical boxplot that makes it immediately clear the spread of GDP within continents.
 
@@ -148,27 +144,25 @@ life.time <- gtbl %>%
   group_by(year, continent) %>%
   summarize("mean.le" = mean(lifeExp))
 life.time.long <- dcast(life.time, year~continent, value.var="mean.le") # change from long to wide
-knitr::kable(life.time.long)
+knitr::kable(life.time.long, format="markdown")
 ```
 
-```
-## 
-## 
-## | year| Africa| Americas|  Asia| Europe| Oceania|
-## |----:|------:|--------:|-----:|------:|-------:|
-## | 1952|  39.14|    53.28| 46.31|  64.41|   69.25|
-## | 1957|  41.27|    55.96| 49.32|  66.70|   70.30|
-## | 1962|  43.32|    58.40| 51.56|  68.54|   71.08|
-## | 1967|  45.33|    60.41| 54.66|  69.74|   71.31|
-## | 1972|  47.45|    62.39| 57.32|  70.78|   71.91|
-## | 1977|  49.58|    64.39| 59.61|  71.94|   72.86|
-## | 1982|  51.59|    66.23| 62.62|  72.81|   74.29|
-## | 1987|  53.34|    68.09| 64.85|  73.64|   75.32|
-## | 1992|  53.63|    69.57| 66.54|  74.44|   76.94|
-## | 1997|  53.60|    71.15| 68.02|  75.51|   78.19|
-## | 2002|  53.33|    72.42| 69.23|  76.70|   79.74|
-## | 2007|  54.81|    73.61| 70.73|  77.65|   80.72|
-```
+
+
+| year| Africa| Americas|  Asia| Europe| Oceania|
+|----:|------:|--------:|-----:|------:|-------:|
+| 1952|  39.14|    53.28| 46.31|  64.41|   69.25|
+| 1957|  41.27|    55.96| 49.32|  66.70|   70.30|
+| 1962|  43.32|    58.40| 51.56|  68.54|   71.08|
+| 1967|  45.33|    60.41| 54.66|  69.74|   71.31|
+| 1972|  47.45|    62.39| 57.32|  70.78|   71.91|
+| 1977|  49.58|    64.39| 59.61|  71.94|   72.86|
+| 1982|  51.59|    66.23| 62.62|  72.81|   74.29|
+| 1987|  53.34|    68.09| 64.85|  73.64|   75.32|
+| 1992|  53.63|    69.57| 66.54|  74.44|   76.94|
+| 1997|  53.60|    71.15| 68.02|  75.51|   78.19|
+| 2002|  53.33|    72.42| 69.23|  76.70|   79.74|
+| 2007|  54.81|    73.61| 70.73|  77.65|   80.72|
 
 A comparison of life expectancy trends, by continent, again using `jitter` for the points to be more easily visible. 
 
@@ -227,40 +221,38 @@ asia.relative.le <- asia.le %>%
   group_by(country) %>%
   tally %>% 
   arrange(desc(n))
-knitr::kable(asia.relative.le)
+knitr::kable(asia.relative.le, format="markdown")
 ```
 
-```
-## 
-## 
-## |country            |  n|
-## |:------------------|--:|
-## |Afghanistan        | 12|
-## |Yemen, Rep.        |  7|
-## |Cambodia           |  7|
-## |Nepal              |  7|
-## |Bangladesh         |  7|
-## |India              |  5|
-## |Indonesia          |  5|
-## |Vietnam            |  5|
-## |Myanmar            |  4|
-## |Pakistan           |  4|
-## |Mongolia           |  4|
-## |Oman               |  4|
-## |Saudi Arabia       |  4|
-## |Iran               |  3|
-## |Jordan             |  3|
-## |West Bank and Gaza |  3|
-## |Syria              |  3|
-## |China              |  3|
-## |Iraq               |  2|
-## |Philippines        |  2|
-## |Thailand           |  1|
-## |Korea, Dem. Rep.   |  1|
-## |Malaysia           |  1|
-## |Korea, Rep.        |  1|
-## |Bahrain            |  1|
-```
+
+
+|country            |  n|
+|:------------------|--:|
+|Afghanistan        | 12|
+|Yemen, Rep.        |  7|
+|Cambodia           |  7|
+|Nepal              |  7|
+|Bangladesh         |  7|
+|India              |  5|
+|Indonesia          |  5|
+|Vietnam            |  5|
+|Myanmar            |  4|
+|Pakistan           |  4|
+|Mongolia           |  4|
+|Oman               |  4|
+|Saudi Arabia       |  4|
+|Iran               |  3|
+|Jordan             |  3|
+|West Bank and Gaza |  3|
+|Syria              |  3|
+|China              |  3|
+|Iraq               |  2|
+|Philippines        |  2|
+|Thailand           |  1|
+|Korea, Dem. Rep.   |  1|
+|Malaysia           |  1|
+|Korea, Rep.        |  1|
+|Bahrain            |  1|
 
 Now, we can try plotting this. The discrete colour scale makes it easy to see exactly when countries escaped the bottom quartile. (Although it somewhat resembles Snake)
 
@@ -281,4 +273,4 @@ ggplot(asia.le, aes(x = year, y = lifeExp, colour = lifeExp < asia.1q)) +
 * The shortcut for `%>%` is Shift-Alt-> for Macs! Don't make the same mistake I did (using Command + option + m) which will minimize RStudio.
 * Jenny wasn't kidding when she said `magrittr` and `dplyr` would change our lives. Complicated problems became trivial once I got the hang of using `tbl_df` and ` %>%`. 
 * I had too much fun playing with Jeffrey Arnold's `ggthemes`. Documentation is [here.](https://github.com/jrnold/ggthemes)
-* ggplot2 is amazing. I'm still amazed by how quickly these graphs can be created, with intuitive colour scales and themes. The only issue I see with it is that there are quite a bit of small details that need tweaking, that are very difficult to fix in R itself. [Nathan Yau's](flowingdata.com) process is to make all graphics in R first and Illustrator after, and I think I will be following that procedure from now on. 
+* ggplot2 is amazing. I'm still amazed by how quickly these graphs can be created, with intuitive colour scales and themes. The only issue I see with it is that there are quite a bit of small details that need tweaking, that are very difficult to fix in R itself. [Nathan Yau's](http://flowingdata.com) process is to make all graphics in R first and Illustrator after, and I think I will be following that procedure from now on. 

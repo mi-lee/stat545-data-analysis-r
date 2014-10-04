@@ -24,11 +24,11 @@ gtbl <- tbl_df(gDat)
 ## Task 1: Get the maximum and minimum of GDP per capita for all continents.
 
 With `dplyr`, this task is straightforward. I used `knitr::kable` to automatically format the table. 
-```{r}
+```{r, results='asis'}
 gdp.tbl=gtbl %>%
   group_by(continent) %>%
   summarise_each(funs(min, max), gdpPercap)
-knitr::kable(gdp.tbl) # use knitr:kable to automatically format the table 
+knitr::kable(gdp.tbl, format="markdown") # use knitr:kable to automatically format the table 
 ```
 
 To show clearly the minimum and maximum, I used `reshape2` to melt the table.
@@ -58,11 +58,11 @@ I made this plot as simple as possible because the task was to find the minimum 
 
 We can use `summarise_each` to calculate GDP per capita in different ways. 
 
-```{r}
+```{r, results='asis'}
 gdp.var <- gtbl %>%
   group_by(continent) %>%
   summarise_each(funs(mean, median, sd), gdpPercap)
-knitr::kable(gdp.var)
+knitr::kable(gdp.var, format="markdown")
 ```
 
 A typical boxplot that makes it immediately clear the spread of GDP within continents.
@@ -103,12 +103,12 @@ Never again.
 ## Task 3: How is life expectancy changing over time on different continents?
 
 My original data frame was in long format, which is good for analyzing data but not so much for readability. I used `dcast` to change the data from long to wide.
-```{r}
+```{r, results='asis',fig.align='center'}
 life.time <- gtbl %>%
   group_by(year, continent) %>%
   summarize("mean.le" = mean(lifeExp))
 life.time.long <- dcast(life.time, year~continent, value.var="mean.le") # change from long to wide
-knitr::kable(life.time.long)
+knitr::kable(life.time.long, format="markdown")
 ```
 
 A comparison of life expectancy trends, by continent, again using `jitter` for the points to be more easily visible. 
@@ -153,13 +153,13 @@ I will look at the relative abundance of low life expectancies within Asia: whic
 asia.1q <- quantile(asia.le$lifeExp, 0.25)
 ```
 
-```{r}
+```{r, results='asis'}
 asia.relative.le <- asia.le %>%
   filter(lifeExp < asia.1q) %>%
   group_by(country) %>%
   tally %>% 
   arrange(desc(n))
-knitr::kable(asia.relative.le)
+knitr::kable(asia.relative.le, format="markdown")
 ```
 
 Now, we can try plotting this. The discrete colour scale makes it easy to see exactly when countries escaped the bottom quartile. (Although it somewhat resembles Snake)
@@ -178,4 +178,4 @@ ggplot(asia.le, aes(x = year, y = lifeExp, colour = lifeExp < asia.1q)) +
 * The shortcut for `%>%` is Shift-Alt-> for Macs! Don't make the same mistake I did (using Command + option + m) which will minimize RStudio.
 * Jenny wasn't kidding when she said `magrittr` and `dplyr` would change our lives. Complicated problems became trivial once I got the hang of using `tbl_df` and ` %>%`. 
 * I had too much fun playing with Jeffrey Arnold's `ggthemes`. Documentation is [here.](https://github.com/jrnold/ggthemes)
-* ggplot2 is amazing. I'm still amazed by how quickly these graphs can be created, with intuitive colour scales and themes. The only issue I see with it is that there are quite a bit of small details that need tweaking, that are very difficult to fix in R itself. [Nathan Yau's](flowingdata.com) process is to make all graphics in R first and Illustrator after, and I think I will be following that procedure from now on. 
+* ggplot2 is amazing. I'm still amazed by how quickly these graphs can be created, with intuitive colour scales and themes. The only issue I see with it is that there are quite a bit of small details that need tweaking, that are very difficult to fix in R itself. [Nathan Yau's](http://flowingdata.com) process is to make all graphics in R first and Illustrator after, and I think I will be following that procedure from now on. 
