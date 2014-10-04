@@ -9,7 +9,6 @@ identical(gTable2, gDelim)
 
 lifeExp <- read.csv("/Volumes/DATA/My Documents/Dropbox/STAT-545A/zz_michelle_lee-coursework/lifeExp.csv")
 colnames(lifeExp)=c("Country", 1800:2012)
-subset
 
 
 # Basic facts
