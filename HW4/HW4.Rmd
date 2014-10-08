@@ -1,0 +1,133 @@
+---
+title: 'HW 4: Using plyr to apply functions'
+author: "Michelle Lee"
+date: "October 8, 2014"
+output:
+  html_document:
+    keep_md: yes
+    toc: yes
+---
+
+### Purpose
+
+The purpose was to:
+* write one or more custom functions that do something useful to the Gapminder data
+* use `plyr:ddply()` to apply to all such pieces
+* use `dplyr` or `ggplot2` to explore what you got back
+
+
+### Writing the functions
+
+We first load the libraries and data.
+```{r, echo=F}
+library(plyr)
+suppressMessages(library(dplyr))
+library(ggplot2)
+library(ggthemes)
+library(assertthat)
+library(knitr)
+gDat <- read.delim("gapminderDataFiveYear.txt")
+gtbl<-tbl_df(gDat)
+```
+
+
+#### Simple Linear Regression
+
+I will try to create a function where I input the data and an offset year, and obtain the intercept and slope for two variables, life expectancy and year. 
+
+```{r}
+le.lm.fcn<- function(x, offset=1952){
+  
+  # checking
+  assert_that(is.data.frame(x)) # test that it is a data frame
+  assert_that(is.numeric(offset)) # test that it is a number
+  
+  # obtain data
+  est.coefs <- coef(lm(lifeExp~I(year - offset),data=x))
+  est.coefs <- as.data.frame(t(est.coefs))
+  colnames(est.coefs) <- c("intercept","slope")
+  return(est.coefs)
+}
+```
+
+We can test this function with a smaller dataset, i.e. Vietnam. 
+
+```{r, results='asis'}
+vietnam <- subset(gDat, country=="Vietnam")
+knitr::kable(le.lm.fcn(vietnam))
+```
+
+Let's check a plot to see if things really worked.
+
+```{r}
+ggplot(vietnam, aes(x = year, y = lifeExp)) + geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + geom_point(lwd=3) + 
+  xlab("Year") + ylab("Life expectancy") + theme(legend.position="none")+ 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20))+ 
+  ggtitle("Life expectancy over time in Vietnam") + theme_economist()
+```
+
+It looks fairly reasonable!
+
+
+### Analyzing residuals, effects, and fitted values
+
+```{r}
+# types of residuals: standardized; studentized; and raw. 
+res.fcn <- function(x, offset=1952, type = c("student", "standard", "raw")) {
+  
+  # check if everything works
+    assert_that(is.data.frame(x))
+    assert_that(is.string(type))
+    assert_that(is.numeric(offset))
+    
+    # initial model results
+    model <- lm(lifeExp~I(year - offset),data=x)
+    effects <- model$effects
+    fitted.vals <- model$fitted.values
+    
+    # what kind of residual
+    if (type=="student") {
+      res <- rstudent(model)
+    } else if (type=="standard") {
+      res <- rstandard(model)
+    } else if (type=="raw") {
+      res <- model$residuals
+    } else 
+      return("Sorry, this is not a proper residual type. Please pick one of the three: 'student', 'standard', or 'raw'.")
+    
+    # get final results
+    results <- cbind(x$year, res, effects, fitted.vals)
+    colnames(results) <- c("year", "residuals", "effects", "fitted values")
+    return(results)
+}
+```
+
+
+Let's try it on the Vietnam country data again.
+
+```{r, results='asis'}
+knitr::kable(head(res.fcn(vietnam, type="student"), n=5))
+knitr::kable(head(res.fcn(vietnam, type="standard"), n=5))
+knitr::kable(head(res.fcn(vietnam, type="raw"), n=5))
+```
+
+It all works! Now let's test to make sure the `type` value works.
+
+```{r, error=TRUE}
+head(res.fcn(vietnam, type="asdfasdf"), n=5)
+head(res.fcn(vietnam, type=555), n=5)
+```
+
+I think those are fairly reasonable error messages. Moving onto a plot, to make sure our residuals are reasonable. 
+
+```{r}
+raw.resid <- res.fcn(vietnam, type="raw")[,2]
+ggplot(vietnam, aes(x = year, y = raw.resid)) + geom_point() + 
+  geom_abline(slope = 0, color = "red") + geom_point(lwd=3) + 
+  theme_economist() + ggtitle("Raw residuals plot for Vietnam") +
+  xlab("Year") + ylab("Residuals") + theme(legend.position="none") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 20))
+```
+
+The residual plot for Vietnam fits with the values in the table above. Next, we will apply our functions to the entire Gapminder set.

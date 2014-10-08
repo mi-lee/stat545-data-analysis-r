@@ -2,9 +2,9 @@
 
 install.packages("dplyr", dependencies=TRUE)
 install.packages("plyr",dependencies=TRUE)
-library(dplyr)
-library(plyr)
 
+library(plyr)
+library(dplyr)
 
 
 ## Missed stuff
