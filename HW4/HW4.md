@@ -181,4 +181,4 @@ ggplot(vietnam, aes(x = year, y = raw.resid)) + geom_point() +
 
 The residual plot for Vietnam fits with the values in the table above. Next, we will apply our functions to the entire Gapminder set.
 
-For Part 2, [click here](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW4/HW4-2.md. 
+For Part 2, [click here](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW4/HW4-2.md). 
