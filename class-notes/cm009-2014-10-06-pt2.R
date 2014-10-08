@@ -6,7 +6,7 @@ gDat <- read.delim("gapminderDataFiveYear.txt")
 
 j_coefs <- ddply(gDat, ~country + continent, 
                  function(x, offset= 1952) {
-                   the_fit <- lm(lifeExp ~ I(year - offset), x)  # I inhibits coercion
+                   the_fit <- lm(lifeExp ~ I(year - offset), x)  # I inhibits c  oercion
                    setNames(coef(the_fit), c("intercept", "slope"))}
 )
 
