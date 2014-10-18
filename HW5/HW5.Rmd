@@ -1,7 +1,7 @@
 ---
 title: 'HW 5: Factors and Files'
 author: "Michelle Lee"
-date: "October 17, 2014"
+date: "October 16, 2014"
 output:
   html_document:
     keep_markdown: yes
