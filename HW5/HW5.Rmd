@@ -4,10 +4,9 @@ author: "Michelle Lee"
 date: "October 16, 2014"
 output:
   html_document:
-    keep_markdown: yes
     keep_md: yes
     toc: yes
-    toc_depth: 2
+    toc_depth: 4
 ---
 
 ## Prior tasks
