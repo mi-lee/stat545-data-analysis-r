@@ -1,7 +1,7 @@
 ---
 title: 'Homework 7: Data wranging - the grand finale'
 author: "Michelle Lee"
-date: "November 1, 2014"
+date: "Oct 31, 2014"
 output:
   html_document:
     keep_md: yes
@@ -54,7 +54,8 @@ kable(stat<-gather(stat, key="Var", value="Value", Enrolled, Avg, Std.dev, High,
 
 ... transformed to long! I wish I had known about `gather` before - it's now a ridiculously easy process. Here's a plot:
 
-```{r stat-barplot, warning=FALSE}
+```{r stat-barplot, warning=FALSE, fig.height=12, fig.width=12}
+# plot barplots of various values 
 ggplot(stat, aes(x=Course, y=Value, fill=Var)) + 
   geom_bar(stat="identity", position="dodge") + 
   facet_wrap(~Var, scales="free_y") + 
@@ -74,6 +75,7 @@ I made my own dplyr join functions cheatsheet.
 I used `dlply` to enact linear regression on each Gapminder country -  without separating the data frame into numerous smaller ones!
 
 ```{r}
+# make a function for dlply
 aggfcn<- function(data, offset=1952) {
   model1<- lm(lifeExp~ I(year-offset), data)
 }
@@ -98,6 +100,7 @@ kable(head(summary(cdat)))
 Let's try looking at information for just one country.
 
 ```{r}
+# filter by Sweden only
 swed<-cdat[["Sweden"]]
 str(swed)
 ```
@@ -105,20 +108,26 @@ str(swed)
 We can see that there are a number of things we can access - coefficients, residuals, and so on. We can use `ldply` to get all the coefficients we want into a neater looking table. For example,
 
 ```{r, results='asis'}
+# get a table of coefficients
 kable(head(ldply(cdat, coefficients)))
 ```
 
 or,
 ```{r, results='asis'}
+# get a table of residuals
 kable(head(ldply(cdat, residuals)))
 ```
 
 
-We can plot the density of 
+We can plot the density of the slopes:
+
 ```{r gapminder-slope}
+# plot the density of the slopes
 coef<-ldply(cdat, coefficients)
 colnames(coef)[c(2:3)]<-c("intercept", "slope")
-ggplot(coef, aes(x=slope)) + geom_density(fill="purple", alpha=0.4) + ggtitle("Density of the slope of linear models") + theme_economist()
+ggplot(coef, aes(x=slope)) + 
+  geom_density(fill="purple", alpha=0.4) + 
+  ggtitle("Density of the slope of linear models") + theme_economist()
 ```
 
 
@@ -150,6 +159,7 @@ summary(swed)$fstatistic[1]
 It worked! Now to try for all countries:
 
 ```{r, results='asis'}
+# create a function for ldply
 r.fcn <- function(data) {
   summary(data)$r.squared
 }
@@ -158,6 +168,7 @@ kable(head(ldply(cdat, r.fcn)))
 
 It worked! Now for the F-statistic:
 ```{r, results='asis'}
+# create a function for ldply
 f.fcn <- function(data) {
   summary(data)$fstatistic[1]
 }
@@ -167,23 +178,30 @@ kable(head(ldply(cdat, f.fcn)))
 Yay! Now we can try plotting these:
 
 ```{r gapminder-rsq}
+# apply the function using ldply and extract a table
 rdat<- ldply(cdat, r.fcn)
 colnames(rdat)[2] <- "rsquared"
 fdat<- ldply(cdat, f.fcn)
 colnames(fdat)[2] <- "fstat"
-ggplot(rdat, aes(x=country, y=rsquared, fill=country)) + geom_point(lwd=3) + coord_flip() +   guides(fill = F) + xlab("R squared") + ylab("Country") + ggtitle("R squared by country")
+
+# plot the results 
+ggplot(rdat, aes(x=country, y=rsquared, fill=country)) + 
+  geom_point(lwd=3) + coord_flip() +   guides(fill = F) + 
+  xlab("R squared") + ylab("Country") + ggtitle("R squared by country")
 ```
 
 This is not particularly helpful - we can try a density plot instead. 
 
 ```{r gapminder-rsq2}
-ggplot(rdat, aes(rsquared)) + geom_density(fill="blue", alpha=0.7) + ggtitle("R squared by country") + xlab("R squared") + theme_economist()
+ggplot(rdat, aes(rsquared)) + geom_density(fill="blue", alpha=0.7) + 
+  ggtitle("R squared by country") + xlab("R squared") + theme_economist()
 ```
 
 For a one-variable model, it seems like the majority of the countries' life expectancies are well predicted just by year. Now we can try F-statistics. 
 
 ```{r gapminder-f-stat}
-ggplot(fdat, aes(fstat)) + geom_density(fill="lightblue") + ggtitle("F-statistics by country") + xlab("F-statistic") + theme_economist()
+ggplot(fdat, aes(fstat)) + geom_density(fill="lightblue") + 
+  ggtitle("F-statistics by country") + xlab("F-statistic") + theme_economist()
 ```
 
 

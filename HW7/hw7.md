@@ -1,6 +1,6 @@
 # Homework 7: Data wranging - the grand finale
 Michelle Lee  
-November 1, 2014  
+Oct 31, 2014  
 
 
 
@@ -160,6 +160,7 @@ kable(stat<-gather(stat, key="Var", value="Value", Enrolled, Avg, Std.dev, High,
 
 
 ```r
+# plot barplots of various values 
 ggplot(stat, aes(x=Course, y=Value, fill=Var)) + 
   geom_bar(stat="identity", position="dodge") + 
   facet_wrap(~Var, scales="free_y") + 
@@ -182,6 +183,7 @@ I used `dlply` to enact linear regression on each Gapminder country -  without s
 
 
 ```r
+# make a function for dlply
 aggfcn<- function(data, offset=1952) {
   model1<- lm(lifeExp~ I(year-offset), data)
 }
@@ -292,6 +294,7 @@ Let's try looking at information for just one country.
 
 
 ```r
+# filter by Sweden only
 swed<-cdat[["Sweden"]]
 str(swed)
 ```
@@ -332,7 +335,7 @@ str(swed)
 ##   .. ..- attr(*, "order")= int 1
 ##   .. ..- attr(*, "intercept")= int 1
 ##   .. ..- attr(*, "response")= int 1
-##   .. ..- attr(*, ".Environment")=<environment: 0x7ff454d40558> 
+##   .. ..- attr(*, ".Environment")=<environment: 0x7fa7a611fc30> 
 ##   .. ..- attr(*, "predvars")= language list(lifeExp, I(year - offset))
 ##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
 ##   .. .. ..- attr(*, "names")= chr [1:2] "lifeExp" "I(year - offset)"
@@ -349,7 +352,7 @@ str(swed)
 ##   .. .. ..- attr(*, "order")= int 1
 ##   .. .. ..- attr(*, "intercept")= int 1
 ##   .. .. ..- attr(*, "response")= int 1
-##   .. .. ..- attr(*, ".Environment")=<environment: 0x7ff454d40558> 
+##   .. .. ..- attr(*, ".Environment")=<environment: 0x7fa7a611fc30> 
 ##   .. .. ..- attr(*, "predvars")= language list(lifeExp, I(year - offset))
 ##   .. .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
 ##   .. .. .. ..- attr(*, "names")= chr [1:2] "lifeExp" "I(year - offset)"
@@ -360,6 +363,7 @@ We can see that there are a number of things we can access - coefficients, resid
 
 
 ```r
+# get a table of coefficients
 kable(head(ldply(cdat, coefficients)))
 ```
 
@@ -377,6 +381,7 @@ kable(head(ldply(cdat, coefficients)))
 or,
 
 ```r
+# get a table of residuals
 kable(head(ldply(cdat, residuals)))
 ```
 
@@ -392,12 +397,16 @@ kable(head(ldply(cdat, residuals)))
 |Australia   |  0.7195|  0.7909|  0.2522| -0.7164| -1.0250| -0.6036| -0.4922| -0.0508|  0.0505|  0.1819|  0.5833|  0.3097|
 
 
-We can plot the density of 
+We can plot the density of the slopes:
+
 
 ```r
+# plot the density of the slopes
 coef<-ldply(cdat, coefficients)
 colnames(coef)[c(2:3)]<-c("intercept", "slope")
-ggplot(coef, aes(x=slope)) + geom_density(fill="purple", alpha=0.4) + ggtitle("Density of the slope of linear models") + theme_economist()
+ggplot(coef, aes(x=slope)) + 
+  geom_density(fill="purple", alpha=0.4) + 
+  ggtitle("Density of the slope of linear models") + theme_economist()
 ```
 
 ![plot of chunk gapminder-slope](./hw7_files/figure-html/gapminder-slope.png) 
@@ -462,7 +471,7 @@ str(summary(swed))
 ##   .. ..- attr(*, "order")= int 1
 ##   .. ..- attr(*, "intercept")= int 1
 ##   .. ..- attr(*, "response")= int 1
-##   .. ..- attr(*, ".Environment")=<environment: 0x7ff454d40558> 
+##   .. ..- attr(*, ".Environment")=<environment: 0x7fa7a611fc30> 
 ##   .. ..- attr(*, "predvars")= language list(lifeExp, I(year - offset))
 ##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
 ##   .. .. ..- attr(*, "names")= chr [1:2] "lifeExp" "I(year - offset)"
@@ -511,6 +520,7 @@ It worked! Now to try for all countries:
 
 
 ```r
+# create a function for ldply
 r.fcn <- function(data) {
   summary(data)$r.squared
 }
@@ -531,6 +541,7 @@ kable(head(ldply(cdat, r.fcn)))
 It worked! Now for the F-statistic:
 
 ```r
+# create a function for ldply
 f.fcn <- function(data) {
   summary(data)$fstatistic[1]
 }
@@ -552,11 +563,16 @@ Yay! Now we can try plotting these:
 
 
 ```r
+# apply the function using ldply and extract a table
 rdat<- ldply(cdat, r.fcn)
 colnames(rdat)[2] <- "rsquared"
 fdat<- ldply(cdat, f.fcn)
 colnames(fdat)[2] <- "fstat"
-ggplot(rdat, aes(x=country, y=rsquared, fill=country)) + geom_point(lwd=3) + coord_flip() +   guides(fill = F) + xlab("R squared") + ylab("Country") + ggtitle("R squared by country")
+
+# plot the results 
+ggplot(rdat, aes(x=country, y=rsquared, fill=country)) + 
+  geom_point(lwd=3) + coord_flip() +   guides(fill = F) + 
+  xlab("R squared") + ylab("Country") + ggtitle("R squared by country")
 ```
 
 ![plot of chunk gapminder-rsq](./hw7_files/figure-html/gapminder-rsq.png) 
@@ -565,7 +581,8 @@ This is not particularly helpful - we can try a density plot instead.
 
 
 ```r
-ggplot(rdat, aes(rsquared)) + geom_density(fill="blue", alpha=0.7) + ggtitle("R squared by country") + xlab("R squared") + theme_economist()
+ggplot(rdat, aes(rsquared)) + geom_density(fill="blue", alpha=0.7) + 
+  ggtitle("R squared by country") + xlab("R squared") + theme_economist()
 ```
 
 ![plot of chunk gapminder-rsq2](./hw7_files/figure-html/gapminder-rsq2.png) 
@@ -574,7 +591,8 @@ For a one-variable model, it seems like the majority of the countries' life expe
 
 
 ```r
-ggplot(fdat, aes(fstat)) + geom_density(fill="lightblue") + ggtitle("F-statistics by country") + xlab("F-statistic") + theme_economist()
+ggplot(fdat, aes(fstat)) + geom_density(fill="lightblue") + 
+  ggtitle("F-statistics by country") + xlab("F-statistic") + theme_economist()
 ```
 
 ![plot of chunk gapminder-f-stat](./hw7_files/figure-html/gapminder-f-stat.png) 
