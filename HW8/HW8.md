@@ -28,7 +28,7 @@ Here's the dirty Gapminder data...
 
 ```r
 # show top of the dirty dataset
-kable(head(ddat))
+knitr::kable(head(ddat))
 ```
 
 
