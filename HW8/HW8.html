@@ -79,7 +79,7 @@ ddat &lt;- read.delim(&quot;gapminderDataFiveYear_dirty.txt&quot;)
 cdat &lt;- read.delim(&quot;gapminderDataFiveYear.txt&quot;)</code></pre>
 <p>Here’s the dirty Gapminder data…</p>
 <pre class="r"><code># show top of the dirty dataset
-knitr::kable(head(ddat))</code></pre>
+knitr::kable(head(ddat), format = &quot;markdown&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -137,7 +137,7 @@ knitr::kable(head(ddat))</code></pre>
 </table>
 <p>… and the clean Gapminder data:</p>
 <pre class="r"><code># show top of the clean dataset
-kable(head(cdat))</code></pre>
+kable(head(cdat), format = &quot;markdown&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -227,7 +227,7 @@ splitCountr&lt;-as.data.frame(matrix(unlist(strsplit(as.character(ddat$region), 
 colnames(splitCountr)&lt;- c(&quot;continent&quot;, &quot;country&quot;)</code></pre>
 <p>Then we can see the top of the split column:</p>
 <pre class="r"><code># show top of the split columns
-kable(head(splitCountr))</code></pre>
+kable(head(splitCountr), format = &quot;markdown&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -279,7 +279,7 @@ kable(head(splitCountr))</code></pre>
   cbind(splitCountr)
 
 # show top of the head column
-kable(head(ddat))</code></pre>
+kable(head(ddat), format = &quot;markdown&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -379,7 +379,7 @@ countSpellWrong&lt;-ddat[(ddat$country %notin% cdat$country),]
 countSpellRight&lt;-cdat[(ddat$country %notin% cdat$country),]$country
 
 # show the two merged
-kable(cbind(countSpellWrong, countSpellRight))</code></pre>
+kable(cbind(countSpellWrong, countSpellRight), format = &quot;markdown&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -557,7 +557,7 @@ wrongCont&lt;-ddat[(ddat$continent %notin% cdat$continent),]
 rightCont&lt;-cdat[(ddat$continent %notin% cdat$continent),]$continent
 
 # merge the two together to compare
-kable(cbind(wrongCont, rightCont))</code></pre>
+kable(cbind(wrongCont, rightCont), format = &quot;markdown&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">

@@ -28,37 +28,37 @@ Here's the dirty Gapminder data...
 
 ```r
 # show top of the dirty dataset
-knitr::kable(head(ddat))
+knitr::kable(head(ddat), format = "markdown")
 ```
 
 
 
- year        pop   lifeExp   gdpPercap  region           
------  ---------  --------  ----------  -----------------
- 1952    8425333    28.801    779.4453  Asia_Afghanistan 
- 1957    9240934    30.332    820.8530  Asia_Afghanistan 
- 1962   10267083    31.997    853.1007  Asia_Afghanistan 
- 1967   11537966    34.020    836.1971  Asia_Afghanistan 
- 1972   13079460    36.088    739.9811  Asia_Afghanistan 
- 1977   14880372    38.438    786.1134  Asia_Afghanistan 
+| year|      pop| lifeExp| gdpPercap|region           |
+|----:|--------:|-------:|---------:|:----------------|
+| 1952|  8425333|  28.801|  779.4453|Asia_Afghanistan |
+| 1957|  9240934|  30.332|  820.8530|Asia_Afghanistan |
+| 1962| 10267083|  31.997|  853.1007|Asia_Afghanistan |
+| 1967| 11537966|  34.020|  836.1971|Asia_Afghanistan |
+| 1972| 13079460|  36.088|  739.9811|Asia_Afghanistan |
+| 1977| 14880372|  38.438|  786.1134|Asia_Afghanistan |
 
 ... and the clean Gapminder data:
 
 ```r
 # show top of the clean dataset
-kable(head(cdat))
+kable(head(cdat), format = "markdown")
 ```
 
 
 
-country        year        pop  continent    lifeExp   gdpPercap
-------------  -----  ---------  ----------  --------  ----------
-Afghanistan    1952    8425333  Asia          28.801    779.4453
-Afghanistan    1957    9240934  Asia          30.332    820.8530
-Afghanistan    1962   10267083  Asia          31.997    853.1007
-Afghanistan    1967   11537966  Asia          34.020    836.1971
-Afghanistan    1972   13079460  Asia          36.088    739.9811
-Afghanistan    1977   14880372  Asia          38.438    786.1134
+|country     | year|      pop|continent | lifeExp| gdpPercap|
+|:-----------|----:|--------:|:---------|-------:|---------:|
+|Afghanistan | 1952|  8425333|Asia      |  28.801|  779.4453|
+|Afghanistan | 1957|  9240934|Asia      |  30.332|  820.8530|
+|Afghanistan | 1962| 10267083|Asia      |  31.997|  853.1007|
+|Afghanistan | 1967| 11537966|Asia      |  34.020|  836.1971|
+|Afghanistan | 1972| 13079460|Asia      |  36.088|  739.9811|
+|Afghanistan | 1977| 14880372|Asia      |  38.438|  786.1134|
 
 I like to use `str` to check any dataset first. 
 
@@ -110,19 +110,19 @@ Then we can see the top of the split column:
 
 ```r
 # show top of the split columns
-kable(head(splitCountr))
+kable(head(splitCountr), format = "markdown")
 ```
 
 
 
-continent   country     
-----------  ------------
-Asia        Afghanistan 
-Asia        Afghanistan 
-Asia        Afghanistan 
-Asia        Afghanistan 
-Asia        Afghanistan 
-Asia        Afghanistan 
+|continent |country     |
+|:---------|:-----------|
+|Asia      |Afghanistan |
+|Asia      |Afghanistan |
+|Asia      |Afghanistan |
+|Asia      |Afghanistan |
+|Asia      |Afghanistan |
+|Asia      |Afghanistan |
 
 We can check to see if the dimensions of the clean and dirty datasets of the country/continents are the same:
 
@@ -166,19 +166,19 @@ ddat<- ddat %>%
   cbind(splitCountr)
 
 # show top of the head column
-kable(head(ddat))
+kable(head(ddat), format = "markdown")
 ```
 
 
 
- year        pop   lifeExp   gdpPercap  continent   country     
------  ---------  --------  ----------  ----------  ------------
- 1952    8425333    28.801    779.4453  Asia        Afghanistan 
- 1957    9240934    30.332    820.8530  Asia        Afghanistan 
- 1962   10267083    31.997    853.1007  Asia        Afghanistan 
- 1967   11537966    34.020    836.1971  Asia        Afghanistan 
- 1972   13079460    36.088    739.9811  Asia        Afghanistan 
- 1977   14880372    38.438    786.1134  Asia        Afghanistan 
+| year|      pop| lifeExp| gdpPercap|continent |country     |
+|----:|--------:|-------:|---------:|:---------|:-----------|
+| 1952|  8425333|  28.801|  779.4453|Asia      |Afghanistan |
+| 1957|  9240934|  30.332|  820.8530|Asia      |Afghanistan |
+| 1962| 10267083|  31.997|  853.1007|Asia      |Afghanistan |
+| 1967| 11537966|  34.020|  836.1971|Asia      |Afghanistan |
+| 1972| 13079460|  36.088|  739.9811|Asia      |Afghanistan |
+| 1977| 14880372|  38.438|  786.1134|Asia      |Afghanistan |
 
 Now we've split up the `region` column into two. We can move onto cleaning each column separately.
 
@@ -241,24 +241,26 @@ countSpellWrong<-ddat[(ddat$country %notin% cdat$country),]
 countSpellRight<-cdat[(ddat$country %notin% cdat$country),]$country
 
 # show the two merged
-kable(cbind(countSpellWrong, countSpellRight))
+kable(cbind(countSpellWrong, countSpellRight), format = "markdown")
 ```
 
-       year          pop    lifeExp   gdpPercap  continent   country                            countSpellRight          
-----  -----  -----------  ---------  ----------  ----------  ---------------------------------  -------------------------
-258    1977      2167533   46.77500   1109.3743  Africa      Central african republic           Central African Republic 
-259    1982      2476971   48.29500    956.7530  Africa      Central african republic           Central African Republic 
-260    1987      2840009   50.48500    844.8764  Africa      Central african republic           Central African Republic 
-261    1992      3265124   49.39600    747.9055  Africa      Central african republic           Central African Republic 
-294    1977    943455000   63.96736    741.2375  Asia        china                              China                    
-295    1982   1000281000   65.52500    962.4214  Asia        china                              China                    
-296    1987   1084035000   67.27400   1378.9040  Asia        china                              China                    
-297    1992   1164970000   68.69000   1655.7842  Asia        china                              China                    
-303    1962     17009885   57.86300   2492.3511  Americas    Colombia                           Colombia                 
-304    1967     19764027   59.96300   2678.7298  Americas    Colombia                           Colombia                 
-329    1972     23007669   45.98900    904.8961  Africa      Democratic Republic of the Congo   Congo, Dem. Rep.         
-334    1997     47798986   42.58700    312.1884  Africa      Congo, Democratic Republic         Congo, Dem. Rep.         
-370    1997     14625967   47.99100   1786.2654  Africa      Cote d'Ivore                       Cote d'Ivoire            
+
+
+|    | year|        pop|  lifeExp| gdpPercap|continent |country                          |countSpellRight          |
+|:---|----:|----------:|--------:|---------:|:---------|:--------------------------------|:------------------------|
+|258 | 1977|    2167533| 46.77500| 1109.3743|Africa    |Central african republic         |Central African Republic |
+|259 | 1982|    2476971| 48.29500|  956.7530|Africa    |Central african republic         |Central African Republic |
+|260 | 1987|    2840009| 50.48500|  844.8764|Africa    |Central african republic         |Central African Republic |
+|261 | 1992|    3265124| 49.39600|  747.9055|Africa    |Central african republic         |Central African Republic |
+|294 | 1977|  943455000| 63.96736|  741.2375|Asia      |china                            |China                    |
+|295 | 1982| 1000281000| 65.52500|  962.4214|Asia      |china                            |China                    |
+|296 | 1987| 1084035000| 67.27400| 1378.9040|Asia      |china                            |China                    |
+|297 | 1992| 1164970000| 68.69000| 1655.7842|Asia      |china                            |China                    |
+|303 | 1962|   17009885| 57.86300| 2492.3511|Americas  |Colombia                         |Colombia                 |
+|304 | 1967|   19764027| 59.96300| 2678.7298|Americas  |Colombia                         |Colombia                 |
+|329 | 1972|   23007669| 45.98900|  904.8961|Africa    |Democratic Republic of the Congo |Congo, Dem. Rep.         |
+|334 | 1997|   47798986| 42.58700|  312.1884|Africa    |Congo, Democratic Republic       |Congo, Dem. Rep.         |
+|370 | 1997|   14625967| 47.99100| 1786.2654|Africa    |Cote d'Ivore                     |Cote d'Ivoire            |
 
 Everything seems to make sense - except for Colombia, which doesn't look misspelled. A closer look, however, shows:
 
@@ -335,17 +337,19 @@ wrongCont<-ddat[(ddat$continent %notin% cdat$continent),]
 rightCont<-cdat[(ddat$continent %notin% cdat$continent),]$continent
 
 # merge the two together to compare
-kable(cbind(wrongCont, rightCont))
+kable(cbind(wrongCont, rightCont), format = "markdown")
 ```
 
-       year        pop   lifeExp   gdpPercap  continent   country            rightCont 
-----  -----  ---------  --------  ----------  ----------  -----------------  ----------
-241    1952   14785584    68.750   11367.161              Canada             Americas  
-242    1957   17010154    69.960   12489.950              Canada             Americas  
-243    1962   18985849    71.300   13462.486              Canada             Americas  
-816    2007    6053193    72.535    4519.461      Asia    Jordan             Asia      
-829    1952    8865488    50.056    1088.278      Asia    Korea, Dem. Rep.   Asia      
-830    1957    9411381    54.081    1571.135      Asia    Korea, Dem. Rep.   Asia      
+
+
+|    | year|      pop| lifeExp| gdpPercap|continent |country          |rightCont |
+|:---|----:|--------:|-------:|---------:|:---------|:----------------|:---------|
+|241 | 1952| 14785584|  68.750| 11367.161|          |Canada           |Americas  |
+|242 | 1957| 17010154|  69.960| 12489.950|          |Canada           |Americas  |
+|243 | 1962| 18985849|  71.300| 13462.486|          |Canada           |Americas  |
+|816 | 2007|  6053193|  72.535|  4519.461|    Asia  |Jordan           |Asia      |
+|829 | 1952|  8865488|  50.056|  1088.278|    Asia  |Korea, Dem. Rep. |Asia      |
+|830 | 1957|  9411381|  54.081|  1571.135|    Asia  |Korea, Dem. Rep. |Asia      |
 
 We can see that Canada is missing 'Americas'. However, 'Asia' doesn't look misspelled. A closer look shows:
 

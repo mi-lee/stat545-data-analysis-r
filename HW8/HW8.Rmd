@@ -33,13 +33,13 @@ Here's the dirty Gapminder data...
 
 ```{r, results='asis'}
 # show top of the dirty dataset
-knitr::kable(head(ddat))
+knitr::kable(head(ddat), format = "markdown")
 ```
 
 ... and the clean Gapminder data:
 ```{r, results='asis'}
 # show top of the clean dataset
-kable(head(cdat))
+kable(head(cdat), format = "markdown")
 ```
 
 I like to use `str` to check any dataset first. 
@@ -67,7 +67,7 @@ Then we can see the top of the split column:
 
 ```{r, results='asis'}
 # show top of the split columns
-kable(head(splitCountr))
+kable(head(splitCountr), format = "markdown")
 ```
 
 We can check to see if the dimensions of the clean and dirty datasets of the country/continents are the same:
@@ -94,7 +94,7 @@ ddat<- ddat %>%
   cbind(splitCountr)
 
 # show top of the head column
-kable(head(ddat))
+kable(head(ddat), format = "markdown")
 ```
 
 Now we've split up the `region` column into two. We can move onto cleaning each column separately.
@@ -127,7 +127,7 @@ countSpellWrong<-ddat[(ddat$country %notin% cdat$country),]
 countSpellRight<-cdat[(ddat$country %notin% cdat$country),]$country
 
 # show the two merged
-kable(cbind(countSpellWrong, countSpellRight))
+kable(cbind(countSpellWrong, countSpellRight), format = "markdown")
 ```
 
 Everything seems to make sense - except for Colombia, which doesn't look misspelled. A closer look, however, shows:
@@ -173,7 +173,7 @@ wrongCont<-ddat[(ddat$continent %notin% cdat$continent),]
 rightCont<-cdat[(ddat$continent %notin% cdat$continent),]$continent
 
 # merge the two together to compare
-kable(cbind(wrongCont, rightCont))
+kable(cbind(wrongCont, rightCont), format = "markdown")
 ```
 
 We can see that Canada is missing 'Americas'. However, 'Asia' doesn't look misspelled. A closer look shows:
