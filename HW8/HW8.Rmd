@@ -1,0 +1,218 @@
+---
+title: 'Homework 8: Gapminder Data Cleaning'
+author: "Michelle Lee"
+output:
+  html_document:
+    keep_md: yes
+    toc: yes
+---
+```{r, echo=FALSE}
+setwd("/Volumes/DATA/My Documents/Dropbox/STAT-545A/zz_michelle_lee-coursework/HW8")
+```
+
+First, I loaded the packages and data.
+```{r}
+# Load packages
+library(knitr)
+library(stringr)
+library(plyr)
+suppressPackageStartupMessages(library(dplyr))
+```
+
+I loaded both the dirty and clean Gapminder data.
+
+```{r}
+# load uncleaned data
+ddat <- read.delim("gapminderDataFiveYear_dirty.txt")
+
+# load clean data
+cdat <- read.delim("gapminderDataFiveYear.txt")
+```
+
+Here's the dirty Gapminder data...
+
+```{r}
+# show top of the dirty dataset
+kable(head(ddat))
+```
+
+... and the clean Gapminder data:
+```{r}
+# show top of the clean dataset
+kable(head(cdat))
+```
+
+I like to use `str` to check any dataset first. 
+
+```{r}
+str(cdat)
+str(ddat)
+```
+
+Using `str` makes obvious the differences between the two datasets, namely: there are 142 levels in the clean dataset, but 151 levels in the 'region' column of the dirty dataset. Therefore, it can't be as simple as splitting up the region column. 
+
+
+## Splitting up the region column
+
+I split up `region` of the dirty dataset into two, using `strsplit`. 
+```{r}
+# split region column into two
+splitCountr<-as.data.frame(matrix(unlist(strsplit(as.character(ddat$region), "_")), ncol=2, byrow=T))
+
+# rename the split columns
+colnames(splitCountr)<- c("continent", "country")
+
+# show top of the split columns
+kable(head(splitCountr))
+```
+
+We can check to see if the dimensions of the clean and dirty datasets of the country/continents are the same:
+
+```{r}
+dim(splitCountr)
+dim(as.data.frame(cbind(cdat$continent, cdat$country)))
+```
+
+They are! But are they identical?
+
+```{r}
+identical(splitCountr, as.data.frame(cbind(cdat$continent, cdat$country)))
+```
+
+They are not, therefore more investigation is needed. 
+
+First, let's replace `region` with the split columns.
+```{r}
+ddat<- ddat %>%
+  # get rid of the region column
+  select(-region) %>% 
+  # add the split columns 
+  cbind(splitCountr)
+
+# show top of the head column
+kable(head(ddat))
+```
+
+Now we've split up the `region` column into two. We can move onto cleaning each column separately.
+
+## Cleaning the country column
+
+I can create af function `%notin%` to define the opposite of `%in%`. Using that, we can see exactly which countries are different:
+
+```{r}
+# create custom function
+`%notin%` <- function(x,y) !(x %in% y) 
+
+# isolate which countries are not correctly spelled
+splitCountr[(splitCountr$country %notin% cdat$country),]
+```
+
+We can also see that the levels of the countries are different:
+```{r}
+length(levels(ddat$country))
+length(levels(cdat$country))
+```
+
+Let's try isolating the misspelled countries to the correct name, from the clean dataset:
+
+```{r}
+# isolate countries that are not correctly spelled
+countSpellWrong<-ddat[(ddat$country %notin% cdat$country),]
+
+# isolate the correct spelling of the misspelled countries
+countSpellRight<-cdat[(ddat$country %notin% cdat$country),]$country
+
+# show the two merged
+kable(cbind(countSpellWrong, countSpellRight))
+```
+
+Everything seems to make sense - except for Colombia, which doesn't look misspelled. A closer look, however, shows:
+
+```{r}
+# isolate the levels that include Colombia
+levels(ddat$country)[28:29]
+```
+
+The extra spaces in "Columbia   " turned it into a different level of a country. We can get rid of this pesky mistake, along with the other misspelled countries, by replacing the wrongly spelled countries with the right ones. 
+
+```{r}
+# replace the misspelled countries with the correct ones
+ddat[(ddat$country %in% countSpellWrong$country),]$country <- countSpellRight
+```
+
+Now let's check if there are any misspelled countries left:
+
+```{r}
+# isolate which countries are misspelled
+ddat[(ddat$country %in% countSpellWrong$country),]
+```
+
+Great! Now are they all correctly spelled?
+
+```{r}
+length(levels(droplevels(ddat$country)))
+length(levels(cdat$country))
+identical(levels(droplevels(ddat$country)), levels(cdat$country))
+```
+
+Same length; and they are identical in levels. Therefore, `country` is complete!
+
+## Cleaning the continent column
+
+Now we can do the same for the continent column. Using our custom `%notin%` function, we can see which continents are misspelled.
+
+```{r}
+# isolate the misspelled continents
+wrongCont<-ddat[(ddat$continent %notin% cdat$continent),]
+
+# isolate the correct spelling of the misspelled continents
+rightCont<-cdat[(ddat$continent %notin% cdat$continent),]$continent
+
+# merge the two together to compare
+kable(cbind(wrongCont, rightCont))
+```
+
+We can see that Canada is missing 'Americas'. However, 'Asia' doesn't look misspelled. A closer look shows:
+
+```{r}
+levels(cdat$continent)
+levels(ddat$continent)
+```
+
+Like Colombia, Asia has extra spaces that changes it into a different level, along with the empty factor (for Canada). We can get rid of these pesky errors by replacing it with the correct name. 
+
+```{r}
+# replace the misspelled continents with the correct spelling
+ddat[(ddat$continent %in% wrongCont$continent),]$continent <- rightCont
+
+# isolate the misspelled countries
+ddat[(ddat$continent %in% wrongCont$continent),]
+```
+
+None of the continents are spelled wrong! Let's check to see if the levels are the same. 
+
+```{r}
+identical(levels(cdat$continent), levels(droplevels(ddat$continent)))
+```
+
+Great! Now let's check to see if all the numbers for GDP, life expectancy, etc. are the same:
+
+```{r}
+identical(ddat[,c(1:4)], cdat[,c(2,3,5,6)])
+```
+
+Great! Now let's put it all together:
+```{r}
+# drop the unused levels in the dirty dataset
+ddat<-droplevels(ddat)
+
+# reorder the columns so it has the same order as the clean set
+ddat<-ddat[,c(6,1,2,5,3,4)]
+identical(ddat, cdat)
+```
+
+And we are done!
+
+## Summary
+* using custom functions such as `%notin%` was very useful in this exercise, though I could have used functions like `inner_join` or `anti_join` as well.
+* extra spacing creates all sorts of havoc in factors. Another easier way may be to convert the countries into character before factors? 
