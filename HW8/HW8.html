@@ -224,9 +224,9 @@ kable(head(cdat))</code></pre>
 splitCountr&lt;-as.data.frame(matrix(unlist(strsplit(as.character(ddat$region), &quot;_&quot;)), ncol=2, byrow=T))
 
 # rename the split columns
-colnames(splitCountr)&lt;- c(&quot;continent&quot;, &quot;country&quot;)
-
-# show top of the split columns
+colnames(splitCountr)&lt;- c(&quot;continent&quot;, &quot;country&quot;)</code></pre>
+<p>Then we can see the top of the split column:</p>
+<pre class="r"><code># show top of the split columns
 kable(head(splitCountr))</code></pre>
 <table>
 <thead>
@@ -342,8 +342,7 @@ kable(head(ddat))</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>dim(ddat)</code></pre>
-<pre><code>## [1] 1704    6</code></pre>
+<p>Now we’ve split up the <code>region</code> column into two. We can move onto cleaning each column separately.</p>
 </div>
 <div id="cleaning-the-country-column" class="section level2">
 <h2>Cleaning the country column</h2>

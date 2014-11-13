@@ -103,7 +103,12 @@ splitCountr<-as.data.frame(matrix(unlist(strsplit(as.character(ddat$region), "_"
 
 # rename the split columns
 colnames(splitCountr)<- c("continent", "country")
+```
 
+Then we can see the top of the split column:
+
+
+```r
 # show top of the split columns
 kable(head(splitCountr))
 ```
@@ -175,14 +180,7 @@ kable(head(ddat))
  1972   13079460    36.088    739.9811  Asia        Afghanistan 
  1977   14880372    38.438    786.1134  Asia        Afghanistan 
 
-```r
-dim(ddat)
-```
-
-```
-## [1] 1704    6
-```
-
+Now we've split up the `region` column into two. We can move onto cleaning each column separately.
 
 ## Cleaning the country column
 

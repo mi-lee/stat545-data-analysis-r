@@ -31,13 +31,13 @@ cdat <- read.delim("gapminderDataFiveYear.txt")
 
 Here's the dirty Gapminder data...
 
-```{r}
+```{r, results='asis'}
 # show top of the dirty dataset
 kable(head(ddat))
 ```
 
 ... and the clean Gapminder data:
-```{r}
+```{r, results='asis'}
 # show top of the clean dataset
 kable(head(cdat))
 ```
@@ -61,7 +61,11 @@ splitCountr<-as.data.frame(matrix(unlist(strsplit(as.character(ddat$region), "_"
 
 # rename the split columns
 colnames(splitCountr)<- c("continent", "country")
+```
 
+Then we can see the top of the split column:
+
+```{r, results='asis'}
 # show top of the split columns
 kable(head(splitCountr))
 ```
@@ -82,7 +86,7 @@ identical(splitCountr, as.data.frame(cbind(cdat$continent, cdat$country)))
 They are not, therefore more investigation is needed. 
 
 First, let's replace `region` with the split columns.
-```{r}
+```{r, results='asis'}
 ddat<- ddat %>%
   # get rid of the region column
   select(-region) %>% 
@@ -115,7 +119,7 @@ length(levels(cdat$country))
 
 Let's try isolating the misspelled countries to the correct name, from the clean dataset:
 
-```{r}
+```{r, results='asis'}
 # isolate countries that are not correctly spelled
 countSpellWrong<-ddat[(ddat$country %notin% cdat$country),]
 
@@ -161,7 +165,7 @@ Same length; and they are identical in levels. Therefore, `country` is complete!
 
 Now we can do the same for the continent column. Using our custom `%notin%` function, we can see which continents are misspelled.
 
-```{r}
+```{r, results='asis'}
 # isolate the misspelled continents
 wrongCont<-ddat[(ddat$continent %notin% cdat$continent),]
 
