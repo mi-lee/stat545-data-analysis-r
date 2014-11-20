@@ -12,10 +12,9 @@ Enjoy!
   
   These are some of the plots I made:
   
-    ![plot0](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/plots/gdp-quantile.png)
+![plot0](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/plots/gdp-quantile.png)
   
-  
-  ![plot1](https://raw.githubusercontent.com/STAT545-UBC/zz_michelle_lee-coursework/master/HW9/plots/r-sq-asia.png?token=AIW6LnWIIGYfWgHxw1sKiUs4FBFkR0mpks5Ud4qfwA%3D%3D)
+![plot1](https://raw.githubusercontent.com/STAT545-UBC/zz_michelle_lee-coursework/master/HW9/plots/r-sq-asia.png?token=AIW6LnWIIGYfWgHxw1sKiUs4FBFkR0mpks5Ud4qfwA%3D%3D)
 
 ![plot2](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/plots/lifeExp-quantile.png)
 
