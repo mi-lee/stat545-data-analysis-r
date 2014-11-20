@@ -36,14 +36,14 @@ best<-function(data) {
   head(arrange(data, -adj.r), n=4)
 }
 best<-ddply(mod, ~continent, best)
-kable(best)
+kable(best, format = "markdown")
 
 # 4 worst countries by slope
 worst<-function(data) {
   head(arrange(data, adj.r), n=4)
 }
 worst<-ddply(mod, ~continent, worst)
-kable(worst)
+kable(worst, format = "markdown")
 
 lmDat <- rbind(best, worst)
 

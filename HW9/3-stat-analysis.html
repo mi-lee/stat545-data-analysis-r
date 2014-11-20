@@ -108,7 +108,7 @@ best&lt;-function(data) {
   head(arrange(data, -adj.r), n=4)
 }
 best&lt;-ddply(mod, ~continent, best)
-kable(best)</code></pre>
+kable(best, format = &quot;markdown&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -272,7 +272,7 @@ worst&lt;-function(data) {
   head(arrange(data, adj.r), n=4)
 }
 worst&lt;-ddply(mod, ~continent, worst)
-kable(worst)</code></pre>
+kable(worst, format = &quot;markdown&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
