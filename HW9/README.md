@@ -19,3 +19,7 @@ Enjoy!
 ![plot2](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/plots/lifeExp-quantile.png)
 
 ![plot3](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/plots/r-sq-africa.png)
+
+## Reflections
+* it was very useful to use the Makefile and see how I could automate it so quickly. Some problems I had included not building and testing at the same time - instead, I wrote all the code and tested at once, and had a difficult time trying to figure out where the error originated from. 
+* one thing I would do differently next time is to be more organized in my files - e.g. split the data, plots, and other files into separate folders, to avoid confusion as the html files are being created. 
