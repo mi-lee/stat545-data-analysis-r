@@ -1,7 +1,9 @@
 ---
 title: "3-stat-analysis"
 author: "Michelle Lee"
-output: html_document
+output:
+  html_document:
+    keep_md: yes
 ---
 
 ```{r}
