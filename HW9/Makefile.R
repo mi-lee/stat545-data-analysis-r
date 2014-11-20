@@ -12,15 +12,15 @@ clean:
 mkdir data plots
 Rscript $<
   
-  data/sorted_gm_data.txt plots/gdp-by-year.png 02_exploratory-analysis.html: 02_exploratory-analysis.R data/gm_data.tsv
+  sorted_gapminder.tsv plots/gdp-quantile.png 2-exploratory-analysis.html: 2-exploratory-analysis.R gapminder.tsv
 Rscript $<
   Rscript -e "rmarkdown::render('$<')"
 
-data/best_worst_data.txt data/gdp_rss_slope_data.txt plots/gdp-worst-fit.png plots/gdp-best-fit.png 03_statistical-analysis.html: 03_statistical-analysis.R data/sorted_gm_data.txt
+best-worst-gapminder.tsv 3-stat-analysis.html: 3-stat-analysis. sorted_gapminder.tsv
 Rscript $<
   Rscript -e "rmarkdown::render('$<')"
 
-plot plots/best_worst_asia.png plots/best_worst_europe.png plots/best_worst_americas.png plots/best_worst_africa.png 04_plot.html: 04_plot.R data/best_worst_data.txt data/sorted_gm_data.txt
+plot plots/r-sq-americas.png plots/r-sq-europe.png plots/r-sq-oceania.png plots/r-sq-africa.png plots/r-sq-asia.png 4-generate-figures.R.html: 4-generate-figures.R best-worst-gapminder.tsv sorted_gapminder.tsv
 Rscript $<
   Rscript -e "rmarkdown::render('$<')"
 rm -f Rplots.pdf
