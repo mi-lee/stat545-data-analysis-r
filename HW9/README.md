@@ -1,7 +1,7 @@
 HW8: Summary of Files
 ==========================
   
-  * This is [1-download data](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/1-download-data.md)
+* This is [1-download data](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/1-download-data.md)
 * and the [2 - exploratory analysis](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/2-exploratory-analysis.md);
 * and the [3-stat analysis](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/3-stat-analysis.md)
 * and the [4-generate figures](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/4-generate-figures.md)
