@@ -21,6 +21,10 @@ Michelle Lee's Repository
 
 * **[Homework 8](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW8)**.
 
+* **[Homework 9](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW9)**.
+
+
+
 * [STAT 545A course site](http://stat545-ubc.github.io/hw01_edit-README.html).
 
 ![time spent formatting vs. analyzing](http://fosslien.com/analyst/seven.png)
