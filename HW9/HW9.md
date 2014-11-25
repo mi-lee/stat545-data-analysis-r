@@ -1,10 +1,3 @@
----
-Author: Michelle Lee
-Title: HW9
-output:
-  html_document:
-    keep_md: yes
----
 
 ## Homework 9
 

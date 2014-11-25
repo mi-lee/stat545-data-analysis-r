@@ -1,11 +1,6 @@
----
-title: "README"
-author: "Michelle Lee"
-date: "November 24, 2014"
-output:
-  html_document:
-    keep_md: yes
----
+# README
+Michelle Lee  
+November 24, 2014  
 
 Homework 9: Pipeline
 ==
