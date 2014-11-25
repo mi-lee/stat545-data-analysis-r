@@ -1,6 +1,5 @@
 # Homework 9: Pipeline
 Michelle Lee  
-November 24, 2014  
 
 
 The final report produced by the end of the pipeline is [here](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/HW9.md). Some plots I made are below:
