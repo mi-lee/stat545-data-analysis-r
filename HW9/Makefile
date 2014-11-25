@@ -1,4 +1,4 @@
-all: HW9.html
+all: HW9.html README.md
 
 clean:
 	rm -rf *.md *.html *.pdf plots
@@ -19,5 +19,6 @@ plot r-sq-americas.png r-sq-europe.png r-sq-oceania.png r-sq-africa.png r-sq-asi
 	Rscript 4-generate-figures.R
 	Rscript -e 'rmarkdown::render("4-generate-figures.Rmd")'
 
-HW9.html: HW9.rmd gdp-quantile.png lifeExp-density.png lifeExp-quantile.png r-sq-africa.png r-sq-americas.png r-sq-asia.png r-sq-europe.png r-sq-oceania.png
+HW9.html README.md: gdp-quantile.png lifeExp-density.png lifeExp-quantile.png r-sq-africa.png r-sq-americas.png r-sq-asia.png r-sq-europe.png r-sq-oceania.png README.rmd HW9.rmd
 	Rscript -e 'rmarkdown::render("HW9.rmd")'
+	Rscript -e 'rmarkdown::render("README.rmd")'
