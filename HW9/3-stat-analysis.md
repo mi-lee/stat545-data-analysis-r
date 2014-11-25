@@ -4,6 +4,13 @@ Michelle Lee
 
 ```r
 library(ggplot2)
+```
+
+```
+## Loading required package: methods
+```
+
+```r
 library(ggthemes)
 library(plyr)
 library(dplyr)

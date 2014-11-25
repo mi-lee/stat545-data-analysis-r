@@ -29,6 +29,13 @@ library(dplyr)
 
 ```r
 library(ggplot2)
+```
+
+```
+## Loading required package: methods
+```
+
+```r
 library(ggthemes)
 
 gdat <- read.delim("gapminder.tsv")
@@ -41,7 +48,7 @@ ggplot(gdat, aes(x=lifeExp, fill=continent)) + geom_density(alpha=0.5) + facet_w
 ```r
 # save graph to file
 
-ggsave(file = "plots/lifeExp-density.png")
+ggsave(file = "lifeExp-density.png")
 ```
 
 ```
@@ -61,7 +68,7 @@ ggplot(gdat, aes(x = year, y = lifeExp, colour = lifeExp < quantile$q3 & lifeExp
 ```r
 # save graph to file
 
-ggsave(file = "plots/lifeExp-quantile.png")
+ggsave(file = "lifeExp-quantile.png")
 ```
 
 ```
@@ -81,7 +88,7 @@ ggplot(gdat, aes(x = year, y = gdpPercap, colour = gdpPercap < quantile.gdp$q3 &
 ```r
 # save graph to file
 
-ggsave(file = "plots/gdp-quantile.png")
+ggsave(file = "gdp-quantile.png")
 ```
 
 ```

@@ -9,6 +9,7 @@ library(RCurl)
 ```
 
 ```
+## Loading required package: methods
 ## Loading required package: bitops
 ```
 

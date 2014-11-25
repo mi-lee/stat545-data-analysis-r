@@ -1,26 +1,23 @@
-RawBlameHistory   
-all: plot
+all: HW9.html
 
 clean:
-  rm -rf data plots 0*.md *.html *.pdf 2-exploratory-analysis 3-stat-analysis 4-generate-figures
+	rm -rf *.md *.html *.pdf plots
 
-.PHONY: all clean # all and clean are not file names
-.DELETE_ON_ERROR: # delete any open files
-  .SECONDARY: # don't delete all secondary files (not target)
-  
-  data/gm_data.tsv: 1-download-data.R
-mkdir data plots
-Rscript $<
-  
-  sorted_gapminder.tsv plots/gdp-quantile.png 2-exploratory-analysis.html: 2-exploratory-analysis.R gapminder.tsv
-Rscript $<
-  Rscript -e "rmarkdown::render('$<')"
+gapminder.tsv 1-download-data.html: 1-download-data.R
+	Rscript 1-download-data.R
+	Rscript -e 'rmarkdown::render("1-download-data.Rmd")'
 
-best-worst-gapminder.tsv 3-stat-analysis.html: 3-stat-analysis. sorted_gapminder.tsv
-Rscript $<
-  Rscript -e "rmarkdown::render('$<')"
+sorted_gapminder.tsv gdp-quantile.png lifeExp-quantile.png lifeExp-density.png 2-exploratory-analysis.html: 2-exploratory-analysis.R gapminder.tsv
+	Rscript 2-exploratory-analysis.R
+	Rscript -e 'rmarkdown::render("2-exploratory-analysis.Rmd")'
 
-plot plots/r-sq-americas.png plots/r-sq-europe.png plots/r-sq-oceania.png plots/r-sq-africa.png plots/r-sq-asia.png 4-generate-figures.R.html: 4-generate-figures.R best-worst-gapminder.tsv sorted_gapminder.tsv
-Rscript $<
-  Rscript -e "rmarkdown::render('$<')"
-rm -f Rplots.pdf
+best-worst-gapminder.tsv 3-stat-analysis.html: 3-stat-analysis.R sorted_gapminder.tsv
+	Rscript 3-stat-analysis.R
+	Rscript -e 'rmarkdown::render("3-stat-analysis.Rmd")'
+
+plot r-sq-americas.png r-sq-europe.png r-sq-oceania.png r-sq-africa.png r-sq-asia.png 4-generate-figures.R.html: 4-generate-figures.R best-worst-gapminder.tsv sorted_gapminder.tsv
+	Rscript 4-generate-figures.R
+	Rscript -e 'rmarkdown::render("4-generate-figures.Rmd")'
+
+HW9.html: HW9.rmd gdp-quantile.png lifeExp-density.png lifeExp-quantile.png r-sq-africa.png r-sq-americas.png r-sq-asia.png r-sq-europe.png r-sq-oceania.png
+	Rscript -e 'rmarkdown::render("HW9.rmd")'

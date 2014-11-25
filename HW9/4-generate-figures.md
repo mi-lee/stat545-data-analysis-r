@@ -4,6 +4,13 @@ Michelle Lee
 
 ```r
 library(ggplot2)
+```
+
+```
+## Loading required package: methods
+```
+
+```r
 library(ggthemes)
 library(plyr)
 library(dplyr)
@@ -46,7 +53,7 @@ ggplot(dat  %>% filter(continent=="Asia"), aes(x = year, y = lifeExp, color = ad
 ![](./4-generate-figures_files/figure-html/unnamed-chunk-1-1.png) 
 
 ```r
-ggsave("plots/r-sq-asia.png");
+ggsave("r-sq-asia.png");
 ```
 
 ```
@@ -60,7 +67,7 @@ ggplot(dat  %>% filter(continent=="Africa"), aes(x = year, y = lifeExp, color = 
 ![](./4-generate-figures_files/figure-html/unnamed-chunk-1-2.png) 
 
 ```r
-ggsave("plots/r-sq-africa.png");
+ggsave("r-sq-africa.png");
 ```
 
 ```
@@ -74,7 +81,7 @@ ggplot(dat  %>% filter(continent=="Oceania"), aes(x = year, y = lifeExp, color =
 ![](./4-generate-figures_files/figure-html/unnamed-chunk-1-3.png) 
 
 ```r
-ggsave("plots/r-sq-oceania.png");
+ggsave("r-sq-oceania.png");
 ```
 
 ```
@@ -88,7 +95,7 @@ ggplot(dat  %>% filter(continent=="Europe"), aes(x = year, y = lifeExp, color = 
 ![](./4-generate-figures_files/figure-html/unnamed-chunk-1-4.png) 
 
 ```r
-ggsave("plots/r-sq-europe.png");
+ggsave("r-sq-europe.png");
 ```
 
 ```
@@ -102,7 +109,7 @@ ggplot(dat  %>% filter(continent=="Americas"), aes(x = year, y = lifeExp, color 
 ![](./4-generate-figures_files/figure-html/unnamed-chunk-1-5.png) 
 
 ```r
-ggsave("plots/r-sq-americas.png");
+ggsave("r-sq-americas.png");
 ```
 
 ```
