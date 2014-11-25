@@ -2,7 +2,7 @@
 Michelle Lee  
 
 
-The final report produced by the end of the pipeline is [here](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/HW9.md). Some plots I made are below:
+The *final report* produced by the end of the pipeline is *[here](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/HW9.md)*. Some plots I made are below:
 
 ![Figure 1](gdp-quantile.png)
 
@@ -16,3 +16,4 @@ The final report produced by the end of the pipeline is [here](https://github.co
 * [2. Exploratory analysis](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/2-exploratory-analysis.md)
 * [3. Statisical analysis](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/3-stat-analysis.md)
 * [4. Generating figures](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/4-generate-figures.md)
+* [Makefile](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW9/Makefile)
