@@ -23,6 +23,8 @@ Michelle Lee's Repository
 
 * **[Homework 9](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW9)**.
 
+* **[Homework 10](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/tree/master/HW10)**.
+
 
 
 * [STAT 545A course site](http://stat545-ubc.github.io/hw01_edit-README.html).

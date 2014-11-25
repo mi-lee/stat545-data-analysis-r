@@ -1,4 +1,6 @@
 HW10: Summary of Files
 ==========================
 
-(Homework is still in progress - please give me a few more hours to finish up!)
+*Homework 10, Building Gameday*
+
+Homework 10 can be found [here](https://github.com/mi-lee/gameday), in a public repo called `gameday`. 
