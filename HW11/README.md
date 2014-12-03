@@ -38,14 +38,12 @@ The app has been deployed to shinyapps.io. The link is **[here!](https://mmlee.s
 	+ What is the best way to use a variable such as `input$x_var` and use it within the context of ggplot, such as `ggplot(aes(x=input$x_var, y=input$y_var))`?  This will return a message like `input cannot be found`.
 	+ I tried all sorts of tricks such as `as.character`, `eval(parse(text = var))`, etc... 
 	
-* A more general question related to the above problem: When creating custom functions and a desired input is the column name (e.g. variable), how can you convert that string into calling the data? For example
+* A more general question related to the above problem: When creating custom functions and a desired input is the column name (e.g. variable), how can you convert that string into calling the data? For example something very simple such as
 
 ```
-fun <- function(x, var) {
-	x$var
+fun <- function(data, var) {
+	data$var
 }
-
-NULL
 ```
 
 This returns `NULL`. I saw that Hadley Wickham's functions will use `.variables` and `.variables <- as.quoted(.variables)`, but I can't seem to get it to work... I would *very* much appreciate some guidance!
