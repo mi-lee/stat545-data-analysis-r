@@ -17,12 +17,12 @@ shinyServer(function(input, output) {
 	
 	# Selecting the variable for the X axis
 	output$choose_x_axis <- renderUI({
-		selectInput("x_var", "X axis", as.list(names(gDat)[c(2,3,5,6)]))
+		selectInput("x_var", "X axis", as.list(c("year", "population", "life expectancy", "GDP per capita")))
 	})
 	
 	# Selecting the variable for the Y axis
 	output$choose_y_axis <- renderUI({
-		selectInput("y_var", "Y axis", as.list(names(gDat)[c(5,2,3,6)]))
+		selectInput("y_var", "Y axis", as.list(c("life expectancy", "year", "population",  "GDP per capita")))
 	})
 	
 	# Country data for selected country
@@ -89,42 +89,42 @@ shinyServer(function(input, output) {
 		if(is.null(one_country_data())) {
 			return(NULL)
 		}
-		if(input$x_var == "pop") {
-			if(input$y_var == "pop") {
+		if(input$x_var == "population") {
+			if(input$y_var == "population") {
 				p <-  ggplot(one_country_data(), aes(x = pop, y = pop))
 			}
-			else if(input$y_var == "lifeExp") {
+			else if(input$y_var == "life expectancy") {
 				p <-  ggplot(one_country_data(), aes(x = pop, y = lifeExp))
 			}
-			else if(input$y_var == "gdpPercap") {
+			else if(input$y_var == "GDP per capita") {
 				p <-  ggplot(one_country_data(), aes(x = pop, y = gdpPercap))
 			}
 			else if(input$y_var == "year") {
 				p <-  ggplot(one_country_data(), aes(x = pop, y = year))
 			}
 		}
-		else if(input$x_var == "lifeExp") {
-			if(input$y_var == "pop") {
+		else if(input$x_var == "life expectancy") {
+			if(input$y_var == "population") {
 				p <-  ggplot(one_country_data(), aes(x = lifeExp, y = pop))
 			}
-			else if(input$y_var == "lifeExp") {
+			else if(input$y_var == "life expectancy") {
 				p <-  ggplot(one_country_data(), aes(x = lifeExp, y = lifeExp))
 			}
-			else if(input$y_var == "gdpPercap") {
+			else if(input$y_var == "GDP per capita") {
 				p <-  ggplot(one_country_data(), aes(x = lifeExp, y = gdpPercap))
 			}
 			else if(input$y_var == "year") {
 				p <-  ggplot(one_country_data(), aes(x = lifeExp, y = year))
 			}
 		}
-		else if(input$x_var == "gdpPercap") {
-			if(input$y_var == "pop") {
+		else if(input$x_var == "GDP per capita") {
+			if(input$y_var == "population") {
 				p <-  ggplot(one_country_data(), aes(x = gdpPercap, y = pop))
 			}
-			else if(input$y_var == "lifeExp") {
+			else if(input$y_var == "life expectancy") {
 				p <-  ggplot(one_country_data(), aes(x = gdpPercap, y = lifeExp))
 			}
-			else if(input$y_var == "gdpPercap") {
+			else if(input$y_var == "GDP per capita") {
 				p <-  ggplot(one_country_data(), aes(x = gdpPercap, y = gdpPercap))
 			}
 			else if(input$y_var == "year") {
@@ -133,13 +133,13 @@ shinyServer(function(input, output) {
 		}
 		
 		else if(input$x_var == "year") {
-			if(input$y_var == "pop") {
+			if(input$y_var == "population") {
 				p <-  ggplot(one_country_data(), aes(x = year, y = pop))
 			}
-			else if(input$y_var == "lifeExp") {
+			else if(input$y_var == "life expectancy") {
 				p <-  ggplot(one_country_data(), aes(x = year, y = lifeExp))
 			}
-			else if(input$y_var == "gdpPercap") {
+			else if(input$y_var == "GDP per capita") {
 				p <-  ggplot(one_country_data(), aes(x = year, y = gdpPercap))
 			}
 			else if(input$y_var == "year") {
