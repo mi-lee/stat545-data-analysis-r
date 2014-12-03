@@ -3,14 +3,14 @@ HW11: Shiny
 
 ## Accessing the app
 
-The app has been deployed to shinyapps.io. The link is [here](https://mmlee.shinyapps.io/gapminder)
+The app has been deployed to shinyapps.io. The link is **[here!](https://mmlee.shinyapps.io/gapminder)**
 
 ## Some features I added
 
-* Drop down menu for X and Y axis (to choose between variables: year, GDP per capita, life expectancy)
+* Drop down menu for X and Y axis in choosing variables
 * Tabs to separate graphs, tables, and an about page
 * Using [bootstrap.css](https://github.com/STAT545-UBC/zz_michelle_lee-coursework/blob/master/HW11/gapminder/www/bootstrap.css) for nicer-looking format
-* Plotting data points for more than 1 country, through different colour schemes 
+* Plotting data points for multiple countries, through different colour schemes 
 * Informative (reactive) title to describe the graph
 
 
@@ -30,20 +30,25 @@ The app has been deployed to shinyapps.io. The link is [here](https://mmlee.shin
 
 * Shiny's strengths: You can make a web application so easily, and without knowledge of Javascript! I am really thrilled with this module in particular as I have a lot of ideas for future probjects. 
 
+* I got stuck on the multiple country selection, and was able to figure it out thanks to [Omar's](https://github.com/STAT545-UBC/zz_omar_alomeir-coursework/blob/master/Homework11/Shiny-apps/Gapminder-app/ui.R) well-documented code. Thank you Omar!
+
 ### Unsolved issues
 
-* I am certain there is someone who knows how to do this, but after a long time I still couldn't figure it out: what is the best way to use a variable such as `input$x_var` and use it within the context of ggplot, e.g. `ggplot(aes(x=input$x_var, y=input$y_var))`?  The code in [server.r](link) is currently inefficient because I kept receiving error messages such as `input cannot be found`.
+* I am certain there is someone who knows how to do this, but after a long time I still couldn't figure it out:
+	+ What is the best way to use a variable such as `input$x_var` and use it within the context of ggplot, such as `ggplot(aes(x=input$x_var, y=input$y_var))`?  This will return a message like `input cannot be found`.
 	+ I tried all sorts of tricks such as `as.character`, `eval(parse(text = var))`, etc... 
 	
-* A more general question related to the above problem: When creating custom functions and a desired input is the column name (e.g. variable), how can you convert that string into calling the data? For example:
+* A more general question related to the above problem: When creating custom functions and a desired input is the column name (e.g. variable), how can you convert that string into calling the data? For example
 
 ```
 fun <- function(x, var) {
 	x$var
 }
+
+NULL
 ```
 
-This will return `NULL`. I saw that Hadley Wickham's functions will use `.variables` and `.variables <- as.quoted(.variables)`, but I can't seem to get it to work... I would very much appreciate some guidance!
+This returns `NULL`. I saw that Hadley Wickham's functions will use `.variables` and `.variables <- as.quoted(.variables)`, but I can't seem to get it to work... I would *very* much appreciate some guidance!
  
 
 Enjoy!
