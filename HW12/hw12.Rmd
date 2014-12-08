@@ -91,7 +91,7 @@ getJobs <- function(url) {
 To try it out:
 
 ```{r}
-knitr::kable(getJobs(url))
+knitr::kable(getJobs(url), format="markdown")
 ```
 
 To explore the data a bit:
