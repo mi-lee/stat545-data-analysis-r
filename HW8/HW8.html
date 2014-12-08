@@ -58,25 +58,62 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="TOC">
 <ul>
-<li><a href="#splitting-up-the-region-column">Splitting up the region column</a></li>
-<li><a href="#cleaning-the-country-column">Cleaning the country column</a></li>
-<li><a href="#cleaning-the-continent-column">Cleaning the continent column</a></li>
+<li><a href="#loading-dirty-gapminder">Loading dirty Gapminder</a><ul>
+<li><a href="#strip.white">Strip.white</a></li>
+</ul></li>
+<li><a href="#splitting-or-merging">Splitting or merging</a></li>
+<li><a href="#missing-values">Missing values</a></li>
+<li><a href="#inconsistent-capitalization-and-spelling">Inconsistent capitalization and spelling</a><ul>
+<li><a href="#inconsistent-spelling">Inconsistent spelling</a></li>
+</ul></li>
+<li><a href="#final-check">Final check</a></li>
 <li><a href="#summary">Summary</a></li>
 </ul>
 </div>
 
-<p>First, I loaded the packages and data.</p>
+<div id="loading-dirty-gapminder" class="section level2">
+<h2>Loading dirty Gapminder</h2>
+<p>First, I loaded the libraries and data.</p>
 <pre class="r"><code># Load packages
 library(knitr)
 library(stringr)
 library(plyr)
 suppressPackageStartupMessages(library(dplyr))</code></pre>
-<p>I loaded both the dirty and clean Gapminder data.</p>
+<div id="strip.white" class="section level3">
+<h3>Strip.white</h3>
+<p>First, I experimented with <code>strip.white()</code>, and compared the two datasets using <code>str</code>.</p>
 <pre class="r"><code># load uncleaned data
-ddat &lt;- read.delim(&quot;gapminderDataFiveYear_dirty.txt&quot;)
-
-# load clean data
+ddat2 &lt;- read.delim(&quot;gapminderDataFiveYear_dirty.txt&quot;)
+ddat &lt;- read.delim(&quot;gapminderDataFiveYear_dirty.txt&quot;, strip.white=T)
+str(ddat2); str(ddat)</code></pre>
+<pre><code>## 'data.frame':    1704 obs. of  5 variables:
+##  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
+##  $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
+##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
+##  $ gdpPercap: num  779 821 853 836 740 ...
+##  $ region   : Factor w/ 151 levels &quot;    Asia_Jordan&quot;,..: 86 86 86 86 86 86 86 86 86 86 ...</code></pre>
+<pre><code>## 'data.frame':    1704 obs. of  5 variables:
+##  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
+##  $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
+##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
+##  $ gdpPercap: num  779 821 853 836 740 ...
+##  $ region   : Factor w/ 148 levels &quot;_Canada&quot;,&quot;Africa_Algeria&quot;,..: 83 83 83 83 83 83 83 83 83 83 ...</code></pre>
+<p>THe main difference I can see is that the factor levels are different - with <code>strip.white</code>, there are only 148 levels, not 151. To find which levels are not in the <code>strip.white</code> dataset:</p>
+<pre class="r"><code>ddat2$region[!(ddat$region %in% ddat2$region)]</code></pre>
+<pre><code>## factor(0)
+## 151 Levels:     Asia_Jordan     Asia_Korea, Dem. Rep. ... Oceania_New Zealand</code></pre>
+<pre class="r"><code>ddat$region[!(ddat$region %in% ddat2$region)]</code></pre>
+<pre><code>## factor(0)
+## 148 Levels: _Canada Africa_Algeria Africa_Angola ... Oceania_New Zealand</code></pre>
+<p>This is not entirely unexpected, because <code>strip.white</code> probably strips the white space around the region names. Since we would have to do that eventually, <code>strip.white</code> is probably a good option to use when importing data!</p>
+<p>I also imported the clean dataset for comparison purposes:</p>
+<pre class="r"><code># load clean data
 cdat &lt;- read.delim(&quot;gapminderDataFiveYear.txt&quot;)</code></pre>
+</div>
+</div>
+<div id="splitting-or-merging" class="section level2">
+<h2>Splitting or merging</h2>
+<p>I decided to split up the column using string splitting <code>strsplit</code>.</p>
 <p>Here’s the dirty Gapminder data…</p>
 <pre class="r"><code># show top of the dirty dataset
 knitr::kable(head(ddat), format = &quot;markdown&quot;)</code></pre>
@@ -200,25 +237,7 @@ kable(head(cdat), format = &quot;markdown&quot;)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>I like to use <code>str</code> to check any dataset first.</p>
-<pre class="r"><code>str(cdat)</code></pre>
-<pre><code>## 'data.frame':    1704 obs. of  6 variables:
-##  $ country  : Factor w/ 142 levels &quot;Afghanistan&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
-##  $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
-##  $ continent: Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
-##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
-##  $ gdpPercap: num  779 821 853 836 740 ...</code></pre>
-<pre class="r"><code>str(ddat)</code></pre>
-<pre><code>## 'data.frame':    1704 obs. of  5 variables:
-##  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
-##  $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
-##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
-##  $ gdpPercap: num  779 821 853 836 740 ...
-##  $ region   : Factor w/ 151 levels &quot;    Asia_Jordan&quot;,..: 86 86 86 86 86 86 86 86 86 86 ...</code></pre>
-<p>Using <code>str</code> makes obvious the differences between the two datasets, namely: there are 142 levels in the clean dataset, but 151 levels in the ‘region’ column of the dirty dataset. Therefore, it can’t be as simple as splitting up the region column.</p>
-<div id="splitting-up-the-region-column" class="section level2">
-<h2>Splitting up the region column</h2>
+<p>Since the clean dataset has separated the country and continent, I split up the region column into 2.</p>
 <p>I split up <code>region</code> of the dirty dataset into two, using <code>strsplit</code>.</p>
 <pre class="r"><code># split region column into two
 splitCountr&lt;-as.data.frame(matrix(unlist(strsplit(as.character(ddat$region), &quot;_&quot;)), ncol=2, byrow=T))
@@ -262,16 +281,7 @@ kable(head(splitCountr), format = &quot;markdown&quot;)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>We can check to see if the dimensions of the clean and dirty datasets of the country/continents are the same:</p>
-<pre class="r"><code>dim(splitCountr)</code></pre>
-<pre><code>## [1] 1704    2</code></pre>
-<pre class="r"><code>dim(as.data.frame(cbind(cdat$continent, cdat$country)))</code></pre>
-<pre><code>## [1] 1704    2</code></pre>
-<p>They are! But are they identical?</p>
-<pre class="r"><code>identical(splitCountr, as.data.frame(cbind(cdat$continent, cdat$country)))</code></pre>
-<pre><code>## [1] FALSE</code></pre>
-<p>They are not, therefore more investigation is needed.</p>
-<p>First, let’s replace <code>region</code> with the split columns.</p>
+<p>Then, I replaced <code>region</code> with the split columns.</p>
 <pre class="r"><code>ddat&lt;- ddat %&gt;%
   # get rid of the region column
   select(-region) %&gt;% 
@@ -342,333 +352,182 @@ kable(head(ddat), format = &quot;markdown&quot;)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Now we’ve split up the <code>region</code> column into two. We can move onto cleaning each column separately.</p>
-</div>
-<div id="cleaning-the-country-column" class="section level2">
-<h2>Cleaning the country column</h2>
-<p>I can create af function <code>%notin%</code> to define the opposite of <code>%in%</code>. Using that, we can see exactly which countries are different:</p>
-<pre class="r"><code># create custom function
-`%notin%` &lt;- function(x,y) !(x %in% y) 
-
-# isolate which countries are not correctly spelled
-splitCountr[(splitCountr$country %notin% cdat$country),]</code></pre>
-<pre><code>##     continent                          country
-## 258    Africa         Central african republic
-## 259    Africa         Central african republic
-## 260    Africa         Central african republic
-## 261    Africa         Central african republic
-## 294      Asia                            china
-## 295      Asia                            china
-## 296      Asia                            china
-## 297      Asia                            china
-## 303  Americas                     Colombia    
-## 304  Americas                     Colombia    
-## 329    Africa Democratic Republic of the Congo
-## 334    Africa       Congo, Democratic Republic
-## 370    Africa                     Cote d'Ivore</code></pre>
-<p>We can also see that the levels of the countries are different:</p>
-<pre class="r"><code>length(levels(ddat$country))</code></pre>
-<pre><code>## [1] 148</code></pre>
-<pre class="r"><code>length(levels(cdat$country))</code></pre>
-<pre><code>## [1] 142</code></pre>
-<p>Let’s try isolating the misspelled countries to the correct name, from the clean dataset:</p>
-<pre class="r"><code># isolate countries that are not correctly spelled
-countSpellWrong&lt;-ddat[(ddat$country %notin% cdat$country),]
-
-# isolate the correct spelling of the misspelled countries
-countSpellRight&lt;-cdat[(ddat$country %notin% cdat$country),]$country
-
-# show the two merged
-kable(cbind(countSpellWrong, countSpellRight), format = &quot;markdown&quot;)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">year</th>
-<th align="right">pop</th>
-<th align="right">lifeExp</th>
-<th align="right">gdpPercap</th>
-<th align="left">continent</th>
-<th align="left">country</th>
-<th align="left">countSpellRight</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">258</td>
-<td align="right">1977</td>
-<td align="right">2167533</td>
-<td align="right">46.77500</td>
-<td align="right">1109.3743</td>
-<td align="left">Africa</td>
-<td align="left">Central african republic</td>
-<td align="left">Central African Republic</td>
-</tr>
-<tr class="even">
-<td align="left">259</td>
-<td align="right">1982</td>
-<td align="right">2476971</td>
-<td align="right">48.29500</td>
-<td align="right">956.7530</td>
-<td align="left">Africa</td>
-<td align="left">Central african republic</td>
-<td align="left">Central African Republic</td>
-</tr>
-<tr class="odd">
-<td align="left">260</td>
-<td align="right">1987</td>
-<td align="right">2840009</td>
-<td align="right">50.48500</td>
-<td align="right">844.8764</td>
-<td align="left">Africa</td>
-<td align="left">Central african republic</td>
-<td align="left">Central African Republic</td>
-</tr>
-<tr class="even">
-<td align="left">261</td>
-<td align="right">1992</td>
-<td align="right">3265124</td>
-<td align="right">49.39600</td>
-<td align="right">747.9055</td>
-<td align="left">Africa</td>
-<td align="left">Central african republic</td>
-<td align="left">Central African Republic</td>
-</tr>
-<tr class="odd">
-<td align="left">294</td>
-<td align="right">1977</td>
-<td align="right">943455000</td>
-<td align="right">63.96736</td>
-<td align="right">741.2375</td>
-<td align="left">Asia</td>
-<td align="left">china</td>
-<td align="left">China</td>
-</tr>
-<tr class="even">
-<td align="left">295</td>
-<td align="right">1982</td>
-<td align="right">1000281000</td>
-<td align="right">65.52500</td>
-<td align="right">962.4214</td>
-<td align="left">Asia</td>
-<td align="left">china</td>
-<td align="left">China</td>
-</tr>
-<tr class="odd">
-<td align="left">296</td>
-<td align="right">1987</td>
-<td align="right">1084035000</td>
-<td align="right">67.27400</td>
-<td align="right">1378.9040</td>
-<td align="left">Asia</td>
-<td align="left">china</td>
-<td align="left">China</td>
-</tr>
-<tr class="even">
-<td align="left">297</td>
-<td align="right">1992</td>
-<td align="right">1164970000</td>
-<td align="right">68.69000</td>
-<td align="right">1655.7842</td>
-<td align="left">Asia</td>
-<td align="left">china</td>
-<td align="left">China</td>
-</tr>
-<tr class="odd">
-<td align="left">303</td>
-<td align="right">1962</td>
-<td align="right">17009885</td>
-<td align="right">57.86300</td>
-<td align="right">2492.3511</td>
-<td align="left">Americas</td>
-<td align="left">Colombia</td>
-<td align="left">Colombia</td>
-</tr>
-<tr class="even">
-<td align="left">304</td>
-<td align="right">1967</td>
-<td align="right">19764027</td>
-<td align="right">59.96300</td>
-<td align="right">2678.7298</td>
-<td align="left">Americas</td>
-<td align="left">Colombia</td>
-<td align="left">Colombia</td>
-</tr>
-<tr class="odd">
-<td align="left">329</td>
-<td align="right">1972</td>
-<td align="right">23007669</td>
-<td align="right">45.98900</td>
-<td align="right">904.8961</td>
-<td align="left">Africa</td>
-<td align="left">Democratic Republic of the Congo</td>
-<td align="left">Congo, Dem. Rep.</td>
-</tr>
-<tr class="even">
-<td align="left">334</td>
-<td align="right">1997</td>
-<td align="right">47798986</td>
-<td align="right">42.58700</td>
-<td align="right">312.1884</td>
-<td align="left">Africa</td>
-<td align="left">Congo, Democratic Republic</td>
-<td align="left">Congo, Dem. Rep.</td>
-</tr>
-<tr class="odd">
-<td align="left">370</td>
-<td align="right">1997</td>
-<td align="right">14625967</td>
-<td align="right">47.99100</td>
-<td align="right">1786.2654</td>
-<td align="left">Africa</td>
-<td align="left">Cote d’Ivore</td>
-<td align="left">Cote d’Ivoire</td>
-</tr>
-</tbody>
-</table>
-<p>Everything seems to make sense - except for Colombia, which doesn’t look misspelled. A closer look, however, shows:</p>
-<pre class="r"><code># isolate the levels that include Colombia
-levels(ddat$country)[28:29]</code></pre>
-<pre><code>## [1] &quot;Colombia&quot;     &quot;Colombia    &quot;</code></pre>
-<p>The extra spaces in “Columbia” turned it into a different level of a country. We can get rid of this pesky mistake, along with the other misspelled countries, by replacing the wrongly spelled countries with the right ones.</p>
-<pre class="r"><code># replace the misspelled countries with the correct ones
-ddat[(ddat$country %in% countSpellWrong$country),]$country &lt;- countSpellRight</code></pre>
-<p>Now let’s check if there are any misspelled countries left:</p>
-<pre class="r"><code># isolate which countries are misspelled
-ddat[(ddat$country %in% countSpellWrong$country),]</code></pre>
-<pre><code>## [1] year      pop       lifeExp   gdpPercap continent country  
-## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
-<p>Great! Now are they all correctly spelled?</p>
-<pre class="r"><code>length(levels(droplevels(ddat$country)))</code></pre>
-<pre><code>## [1] 142</code></pre>
-<pre class="r"><code>length(levels(cdat$country))</code></pre>
-<pre><code>## [1] 142</code></pre>
-<pre class="r"><code>identical(levels(droplevels(ddat$country)), levels(cdat$country))</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<p>Same length; and they are identical in levels. Therefore, <code>country</code> is complete!</p>
-</div>
-<div id="cleaning-the-continent-column" class="section level2">
-<h2>Cleaning the continent column</h2>
-<p>Now we can do the same for the continent column. Using our custom <code>%notin%</code> function, we can see which continents are misspelled.</p>
-<pre class="r"><code># isolate the misspelled continents
-wrongCont&lt;-ddat[(ddat$continent %notin% cdat$continent),]
-
-# isolate the correct spelling of the misspelled continents
-rightCont&lt;-cdat[(ddat$continent %notin% cdat$continent),]$continent
-
-# merge the two together to compare
-kable(cbind(wrongCont, rightCont), format = &quot;markdown&quot;)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">year</th>
-<th align="right">pop</th>
-<th align="right">lifeExp</th>
-<th align="right">gdpPercap</th>
-<th align="left">continent</th>
-<th align="left">country</th>
-<th align="left">rightCont</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">241</td>
-<td align="right">1952</td>
-<td align="right">14785584</td>
-<td align="right">68.750</td>
-<td align="right">11367.161</td>
-<td align="left"></td>
-<td align="left">Canada</td>
-<td align="left">Americas</td>
-</tr>
-<tr class="even">
-<td align="left">242</td>
-<td align="right">1957</td>
-<td align="right">17010154</td>
-<td align="right">69.960</td>
-<td align="right">12489.950</td>
-<td align="left"></td>
-<td align="left">Canada</td>
-<td align="left">Americas</td>
-</tr>
-<tr class="odd">
-<td align="left">243</td>
-<td align="right">1962</td>
-<td align="right">18985849</td>
-<td align="right">71.300</td>
-<td align="right">13462.486</td>
-<td align="left"></td>
-<td align="left">Canada</td>
-<td align="left">Americas</td>
-</tr>
-<tr class="even">
-<td align="left">816</td>
-<td align="right">2007</td>
-<td align="right">6053193</td>
-<td align="right">72.535</td>
-<td align="right">4519.461</td>
-<td align="left">Asia</td>
-<td align="left">Jordan</td>
-<td align="left">Asia</td>
-</tr>
-<tr class="odd">
-<td align="left">829</td>
-<td align="right">1952</td>
-<td align="right">8865488</td>
-<td align="right">50.056</td>
-<td align="right">1088.278</td>
-<td align="left">Asia</td>
-<td align="left">Korea, Dem. Rep.</td>
-<td align="left">Asia</td>
-</tr>
-<tr class="even">
-<td align="left">830</td>
-<td align="right">1957</td>
-<td align="right">9411381</td>
-<td align="right">54.081</td>
-<td align="right">1571.135</td>
-<td align="left">Asia</td>
-<td align="left">Korea, Dem. Rep.</td>
-<td align="left">Asia</td>
-</tr>
-</tbody>
-</table>
-<p>We can see that Canada is missing ‘Americas’. However, ‘Asia’ doesn’t look misspelled. A closer look shows:</p>
+<p>We can check to see if the dimensions of the clean and dirty datasets of the country/continents are the same:</p>
+<pre class="r"><code>dim(as.data.frame(cbind(ddat$continent, ddat$country)))</code></pre>
+<pre><code>## [1] 1704    2</code></pre>
+<pre class="r"><code>dim(as.data.frame(cbind(cdat$continent, cdat$country)))</code></pre>
+<pre><code>## [1] 1704    2</code></pre>
+<p>and to check if they are identical:</p>
+<pre class="r"><code>identical(as.data.frame(cbind(ddat$continent, ddat$country)), as.data.frame(cbind(cdat$continent, cdat$country)))</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>They are not. At closer investigation, I realized what I was missing:</p>
+<pre class="r"><code>levels(ddat$continent)</code></pre>
+<pre><code>## [1] &quot;&quot;         &quot;Africa&quot;   &quot;Americas&quot; &quot;Asia&quot;     &quot;Europe&quot;   &quot;Oceania&quot;</code></pre>
 <pre class="r"><code>levels(cdat$continent)</code></pre>
 <pre><code>## [1] &quot;Africa&quot;   &quot;Americas&quot; &quot;Asia&quot;     &quot;Europe&quot;   &quot;Oceania&quot;</code></pre>
-<pre class="r"><code>levels(ddat$continent)</code></pre>
-<pre><code>## [1] &quot;&quot;         &quot;    Asia&quot; &quot;Africa&quot;   &quot;Americas&quot; &quot;Asia&quot;     &quot;Europe&quot;  
-## [7] &quot;Oceania&quot;</code></pre>
-<p>Like Colombia, Asia has extra spaces that changes it into a different level, along with the empty factor (for Canada). We can get rid of these pesky errors by replacing it with the correct name.</p>
-<pre class="r"><code># replace the misspelled continents with the correct spelling
-ddat[(ddat$continent %in% wrongCont$continent),]$continent &lt;- rightCont
-
-# isolate the misspelled countries
-ddat[(ddat$continent %in% wrongCont$continent),]</code></pre>
-<pre><code>## [1] year      pop       lifeExp   gdpPercap continent country  
-## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
-<p>None of the continents are spelled wrong! Let’s check to see if the levels are the same.</p>
-<pre class="r"><code>identical(levels(cdat$continent), levels(droplevels(ddat$continent)))</code></pre>
+<p>This leads to the next section, Missing Values:</p>
+</div>
+<div id="missing-values" class="section level2">
+<h2>Missing values</h2>
+<p>The goal was to find and fix the “” level within the continents.</p>
+<pre class="r"><code>ddat %&gt;%
+    filter(continent == &quot;&quot;) %&gt;%
+    kable</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">pop</th>
+<th align="right">lifeExp</th>
+<th align="right">gdpPercap</th>
+<th align="left">continent</th>
+<th align="left">country</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1952</td>
+<td align="right">14785584</td>
+<td align="right">68.75</td>
+<td align="right">11367.16</td>
+<td align="left"></td>
+<td align="left">Canada</td>
+</tr>
+<tr class="even">
+<td align="right">1957</td>
+<td align="right">17010154</td>
+<td align="right">69.96</td>
+<td align="right">12489.95</td>
+<td align="left"></td>
+<td align="left">Canada</td>
+</tr>
+<tr class="odd">
+<td align="right">1962</td>
+<td align="right">18985849</td>
+<td align="right">71.30</td>
+<td align="right">13462.49</td>
+<td align="left"></td>
+<td align="left">Canada</td>
+</tr>
+</tbody>
+</table>
+<p>The error only comes from Canada, which makes fixing this much easier. I can imagine how much more difficult it would be if there were many countries that had errors.</p>
+<p>Fixing it was easy - just replace “” with “Americas”. Then I dropped the unused level.</p>
+<pre class="r"><code>ddat$continent[ddat$continent == &quot;&quot;] &lt;- &quot;Americas&quot;
+ddat$continent &lt;- droplevels(ddat$continent)</code></pre>
+<p>Then I checked to make sure everything was identical:</p>
+<pre class="r"><code>identical(ddat$continent, cdat$continent)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>Great! Now let’s check to see if all the numbers for GDP, life expectancy, etc. are the same:</p>
-<pre class="r"><code>identical(ddat[,c(1:4)], cdat[,c(2,3,5,6)])</code></pre>
+<p>No more missing continents!</p>
+</div>
+<div id="inconsistent-capitalization-and-spelling" class="section level2">
+<h2>Inconsistent capitalization and spelling</h2>
+<p>This was the hardest (and most important!) section, as I have never worked with regular expressions before. It took me a lot of experimentation to get used to <code>grep</code>.</p>
+<p>I fixed inconsistent capitalization first. My first attempt was to look for countries starting with small letters:</p>
+<pre class="r"><code>grep(&quot;^[a-z]&quot;, levels(ddat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;china&quot;</code></pre>
+<p>However, I knew there had to more more countries that had errors, since working with the Gapminder dataset had got me well acquainted with tricky country names such as Cote d’Ivoire.</p>
+<p>My second attempt: <code>[ab]</code> was used to look for non-capitalized words, <code>\b</code> was used to look for the pattern at the ends of the words (not strings).</p>
+<pre class="r"><code>grep(&quot;\\b[a-z]&quot;, levels(ddat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;Bosnia and Herzegovina&quot;           &quot;Central african republic&quot;        
+## [3] &quot;china&quot;                            &quot;Cote d'Ivoire&quot;                   
+## [5] &quot;Cote d'Ivore&quot;                     &quot;Democratic Republic of the Congo&quot;
+## [7] &quot;Sao Tome and Principe&quot;            &quot;Trinidad and Tobago&quot;             
+## [9] &quot;West Bank and Gaza&quot;</code></pre>
+<p>I checked the clean dataset to make sure we don’t capitalize the “and”’s.</p>
+<pre class="r"><code>grep(&quot;\\b[a-z]&quot;, levels(cdat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;Bosnia and Herzegovina&quot; &quot;Cote d'Ivoire&quot;         
+## [3] &quot;Sao Tome and Principe&quot;  &quot;Trinidad and Tobago&quot;   
+## [5] &quot;West Bank and Gaza&quot;</code></pre>
+<p>I then tried to have a <code>grep</code> command that did not include of’s, and’s and other words that are not capitalized. Perhaps a bit overkill for this dataset, but I could imagine needing to know it when working with messier ones in the future.</p>
+<pre class="r"><code>grep(&quot;\\b[a-z][^and][^d'I][^of][^the]&quot;, levels(ddat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;Central african republic&quot;         &quot;china&quot;                           
+## [3] &quot;Democratic Republic of the Congo&quot;</code></pre>
+<p>I am still mystified why “Democratic Republic of the Congo” is still there.</p>
+<p>But, returning to our task at hand: I used <code>gsub</code> to replace the uncapitalized countries.</p>
+<pre class="r"><code>ddat$country &lt;- gsub(&quot;china&quot;, &quot;China&quot;, ddat$country)
+ddat$country &lt;- gsub(&quot;Central african republic&quot;, &quot;Central African Republic&quot;, ddat$country)</code></pre>
+<p>We can check that it has been replaced successfully - and it has:</p>
+<pre class="r"><code>unique(ddat$country)[20:30]</code></pre>
+<pre><code>##  [1] &quot;Cameroon&quot;                         &quot;Canada&quot;                          
+##  [3] &quot;Central African Republic&quot;         &quot;Chad&quot;                            
+##  [5] &quot;Chile&quot;                            &quot;China&quot;                           
+##  [7] &quot;Colombia&quot;                         &quot;Comoros&quot;                         
+##  [9] &quot;Congo, Dem. Rep.&quot;                 &quot;Democratic Republic of the Congo&quot;
+## [11] &quot;Congo, Democratic Republic&quot;</code></pre>
+<div id="inconsistent-spelling" class="section level3">
+<h3>Inconsistent spelling</h3>
+<p>Now to deal with inconsistent spelling: previous commands showed dupliates such as</p>
+<pre class="r"><code>unique(ddat$country)[29:31]</code></pre>
+<pre><code>## [1] &quot;Democratic Republic of the Congo&quot; &quot;Congo, Democratic Republic&quot;      
+## [3] &quot;Congo, Rep.&quot;</code></pre>
+<p>Another mistake I made previously: I forgot that Congo and Democratic Republic of Congo are two different countries! Since these words all have the word “Congo” in common, I used that to replace with the correct spelling (before realizing I erased a country off the dataset).</p>
+<p>The clean dataset indicates that the proper spelling is:</p>
+<pre class="r"><code>grep(&quot;*Congo&quot;, levels(cdat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;Congo, Dem. Rep.&quot; &quot;Congo, Rep.&quot;</code></pre>
+<p>Then, I searched for the countries in the dirty dataset that included the word “Congo”:</p>
+<pre class="r"><code>grep(&quot;*Congo&quot;, unique(ddat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;Congo, Dem. Rep.&quot;                 &quot;Democratic Republic of the Congo&quot;
+## [3] &quot;Congo, Democratic Republic&quot;       &quot;Congo, Rep.&quot;</code></pre>
+<p>Therefore, we should replace “Democratic Republic of the Congo” to “Congo, Dem. Rep.” and so on.</p>
+<pre class="r"><code>wrong &lt;- c(&quot;Congo, Democratic Republic&quot;, &quot;Democratic Republic of the Congo&quot;)
+ddat$country[ddat$country %in% wrong] &lt;- &quot;Congo, Dem. Rep.&quot;</code></pre>
+<p>It is fixed! I tried another way, using gsub only:</p>
+<pre class="r"><code>ddat$country &lt;- gsub(wrong[1], &quot;Congo, Dem. Rep.&quot;, ddat$country)
+ddat$country &lt;- gsub(wrong[2], &quot;Congo, Dem. Rep.&quot;, ddat$country)
+grep(&quot;*Congo&quot;, unique(ddat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;Congo, Dem. Rep.&quot; &quot;Congo, Rep.&quot;</code></pre>
+<p>And it is fixed.</p>
+<p>One thing I will try to figure out after this assignment is to use <code>gsub</code> to filter through multiple items that have no elements in common. I could imagine it being a painful process if I had to use gsub for every entry that was spelled incorrectly.</p>
+<p>I had one more thing to fix:</p>
+<pre class="r"><code>ddat$country[!(ddat$country %in% cdat$country)]</code></pre>
+<pre><code>## [1] &quot;Cote d'Ivore&quot;</code></pre>
+<pre class="r"><code>cdat$country[!(ddat$country %in% cdat$country)]</code></pre>
+<pre><code>## [1] Cote d'Ivoire
+## 142 Levels: Afghanistan Albania Algeria Angola Argentina ... Zimbabwe</code></pre>
+<p>This was how I knew I wasn’t done yet, but if I had known, I could have used grep:</p>
+<pre class="r"><code>grep(&quot;*Cote&quot;, unique(ddat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;Cote d'Ivoire&quot; &quot;Cote d'Ivore&quot;</code></pre>
+<p>I then replaced it with the correct spelling:</p>
+<pre class="r"><code>ddat$country &lt;- gsub(&quot;Cote d'Ivore&quot;, &quot;Cote d'Ivoire&quot;, ddat$country)
+grep(&quot;*Cote&quot;, unique(ddat$country), value=T)</code></pre>
+<pre><code>## [1] &quot;Cote d'Ivoire&quot;</code></pre>
+<p>And now it is fixed.</p>
+</div>
+</div>
+<div id="final-check" class="section level2">
+<h2>Final check</h2>
+<pre class="r"><code>str(ddat); str(cdat)</code></pre>
+<pre><code>## 'data.frame':    1704 obs. of  6 variables:
+##  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
+##  $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
+##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
+##  $ gdpPercap: num  779 821 853 836 740 ...
+##  $ continent: Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ country  : chr  &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; ...</code></pre>
+<pre><code>## 'data.frame':    1704 obs. of  6 variables:
+##  $ country  : Factor w/ 142 levels &quot;Afghanistan&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
+##  $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
+##  $ continent: Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
+##  $ gdpPercap: num  779 821 853 836 740 ...</code></pre>
+<pre class="r"><code>identical(ddat$country, cdat$country)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>I saw that country was not yet a factor and the columns were unordered, so to wrap up the last details:</p>
+<pre class="r"><code>ddat$country &lt;- as.factor(ddat$country)
+ddat&lt;-ddat[,c(6,1,2,5,3,4)]</code></pre>
+<p>Lastly, final check:</p>
+<pre class="r"><code>identical(ddat, cdat)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>Great! Now let’s put it all together:</p>
-<pre class="r"><code># drop the unused levels in the dirty dataset
-ddat&lt;-droplevels(ddat)
-
-# reorder the columns so it has the same order as the clean set
-ddat&lt;-ddat[,c(6,1,2,5,3,4)]
-identical(ddat, cdat)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<p>And we are done!</p>
+<p>And we are done.</p>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
 <ul>
-<li>using custom functions such as <code>%notin%</code> was very useful in this exercise, though I could have used functions like <code>inner_join</code> or <code>anti_join</code> as well.</li>
-<li>extra spacing creates all sorts of havoc in factors. Another easier way may be to convert the countries into character before factors?</li>
+<li><code>grep</code> is a godsend for working with character data. After this assignment I went back to my old datasets and found it extremely easy to use (unlike previous efforts where I had to spell out everything!)</li>
+<li>I found terms like <code>\b</code> and <code>\\</code> hard to remember when I did the <code>grep</code> for the countries, and it is very tricky to give exact instructions (capitalize every word, not the entire string) and so on.</li>
+<li>extra spacing creates all sorts of havoc in factors, but <code>strip.white</code> saved me a lot of time.</li>
 </ul>
 </div>
 
