@@ -515,6 +515,7 @@ identical(ddat, cdat)
 
 And we are done. 
 
+![hooray](http://adamrecord.com/wp-content/uploads/2012/03/HoorayLogo.jpg)
 
 ## Summary
 
