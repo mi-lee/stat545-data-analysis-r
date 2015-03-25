@@ -5,6 +5,10 @@ HW11: Shiny
 
 The app has been deployed to shinyapps.io. The link is **[here!](https://mmlee.shinyapps.io/gapminder)**
 
+![screenshot](screenshot.png)
+
+
+
 ## Some features I added to the assignment
 
 * Drop down menu for X and Y axis in choosing variables
