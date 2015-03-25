@@ -5,7 +5,7 @@ HW11: Shiny
 
 The app has been deployed to shinyapps.io. The link is **[here!](https://mmlee.shinyapps.io/gapminder)**
 
-## Some features I added
+## Some features I added to the assignment
 
 * Drop down menu for X and Y axis in choosing variables
 * Tabs to separate graphs, tables, and an about page
@@ -24,13 +24,9 @@ The app has been deployed to shinyapps.io. The link is **[here!](https://mmlee.s
 
 ## Reflections
 
-* The hardest was getting my bearings in understanding the terminology for Shiny; however, I got the hang of it faster than anticipated once I started creating my own features.
+* Shiny is slow, and on my (very old) laptop, running and deploying the app took a lot of time - enough time for tea and coffee runs...
 
-* What I didn't anticipate: Shiny is slow, and on my (very old) laptop, running and deploying the app took a lot of time - enough time for tea and coffee runs...
-
-* Shiny's strengths: You can make a web application so easily, and without knowledge of Javascript! I am really thrilled with this module in particular as I have a lot of ideas for future probjects. 
-
-* I got stuck on the multiple country selection, and was able to figure it out thanks to [Omar's](https://github.com/STAT545-UBC/zz_omar_alomeir-coursework/blob/master/Homework11/Shiny-apps/Gapminder-app/ui.R) well-documented code. Thank you Omar!
+* It's great that I can create a web app without knowledge of Javascript, but apps on Shiny can be clunky. Honestly looking forward to learning JS so I can make nicer ones. 
 
 ### Unsolved issues
 
