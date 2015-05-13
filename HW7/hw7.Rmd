@@ -1,0 +1,210 @@
+---
+title: 'Homework 7: Data wranging - the grand finale'
+author: "Michelle Lee"
+date: "Oct 31, 2014"
+output:
+  html_document:
+    keep_md: yes
+    toc: yes
+---
+
+
+```{r, echo=FALSE}
+setwd("/Volumes/DATA/My Documents/Dropbox/STAT-545A/zz_michelle_lee-coursework/HW7")
+```
+
+This is Homework 7: data wrangling. 
+
+# Prior tasks
+```{r}
+library(ggplot2)
+library(reshape2)
+library(plyr)
+library(tidyr)
+library(knitr)
+library(ggthemes)
+suppressPackageStartupMessages(library(dplyr))
+gDat <- read.delim("gapminderDataFiveYear.txt")
+```
+
+I'll start with the easiest task, changing the data from one shape to another. 
+
+# General data reshaping and relationship 
+
+For this, I'll use a dataset from UBC's PAIR website: grades from all UBC STAT classes, along with some other information. It is in 'wide' format classic to most datasets meant for easy reading, but not so much for analysis. 
+
+To make it a bit easier, I'll add some filters. 
+
+```{r, results='asis'}
+stat <- read.csv("STAT.csv")
+# keep only certain sections of the data
+kable(stat <- stat %>%
+  filter(Section=="OVERALL") %>%
+  select(Subject, Course, Title, Enrolled, Avg, Std.dev, High, Low, Pass, Fail, Withdrew) %>%
+  filter(as.numeric(Course) < 500) %>%
+  na.omit)
+```
+
+In typical wide format. Using `gather`...
+
+```{r, results='asis'}
+# transform data from wide to long
+kable(stat<-gather(stat, key="Var", value="Value", Enrolled, Avg, Std.dev, High, Low, Pass, Fail, Withdrew))
+```
+
+... transformed to long! I wish I had known about `gather` before - it's now a ridiculously easy process. Here's a plot:
+
+```{r stat-barplot, warning=FALSE, fig.height=12, fig.width=12}
+# plot barplots of various values 
+ggplot(stat, aes(x=Course, y=Value, fill=Var)) + 
+  geom_bar(stat="identity", position="dodge") + 
+  facet_wrap(~Var, scales="free_y") + 
+  ggtitle("UBC Statistics courses and related metrics") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 15))
+```
+
+As the course code increases (e.g. courses become more advanced), the enrollment number drops, lowest grade increases, fail and withdrawal rate decreases. 
+
+
+# Join, merge, look up
+
+I made my own dplyr join functions cheatsheet. 
+
+## Data aggregation
+
+I used `dlply` to enact linear regression on each Gapminder country -  without separating the data frame into numerous smaller ones!
+
+```{r}
+# make a function for dlply
+aggfcn<- function(data, offset=1952) {
+  model1<- lm(lifeExp~ I(year-offset), data)
+}
+# get the first few lm objects
+head(dlply(gDat, ~country, aggfcn))
+```
+
+Instead of a table of coefficient, we have actual lm objects! We can look into the object, though beware of using `str` on this. 
+
+```{r}
+cdat<-dlply(gDat, ~country, aggfcn)
+class(cdat)
+length(cdat)
+```
+
+A summary of the data isn't particularly helpful, either - the information we really want is harder to access.
+
+```{r, results='asis'}
+kable(head(summary(cdat)))
+```
+
+Let's try looking at information for just one country.
+
+```{r}
+# filter by Sweden only
+swed<-cdat[["Sweden"]]
+str(swed)
+```
+
+We can see that there are a number of things we can access - coefficients, residuals, and so on. We can use `ldply` to get all the coefficients we want into a neater looking table. For example,
+
+```{r, results='asis'}
+# get a table of coefficients
+kable(head(ldply(cdat, coefficients)))
+```
+
+or,
+```{r, results='asis'}
+# get a table of residuals
+kable(head(ldply(cdat, residuals)))
+```
+
+
+We can plot the density of the slopes:
+
+```{r gapminder-slope}
+# plot the density of the slopes
+coef<-ldply(cdat, coefficients)
+colnames(coef)[c(2:3)]<-c("intercept", "slope")
+ggplot(coef, aes(x=slope)) + 
+  geom_density(fill="purple", alpha=0.4) + 
+  ggtitle("Density of the slope of linear models") + theme_economist()
+```
+
+
+We can take a closer look at the model for Sweden. 
+
+```{r}
+summary(swed)
+```
+
+To access these numbers, I had to remember that the summary is still a list:
+
+```{r}
+typeof(summary(swed))
+```
+
+I found `str` invaluable figuring out how to extract some numbers. For example, if we wanted Multiple R squared and F-statistic, 
+
+```{r}
+str(summary(swed))
+```
+
+I would have to use the code `adj.r.squared` and `fstatstistic` to extract these numbers.
+
+```{r}
+summary(swed)$r.squared
+summary(swed)$fstatistic[1]
+```
+
+It worked! Now to try for all countries:
+
+```{r, results='asis'}
+# create a function for ldply
+r.fcn <- function(data) {
+  summary(data)$r.squared
+}
+kable(head(ldply(cdat, r.fcn)))
+```
+
+It worked! Now for the F-statistic:
+```{r, results='asis'}
+# create a function for ldply
+f.fcn <- function(data) {
+  summary(data)$fstatistic[1]
+}
+kable(head(ldply(cdat, f.fcn)))
+```
+
+Yay! Now we can try plotting these:
+
+```{r gapminder-rsq}
+# apply the function using ldply and extract a table
+rdat<- ldply(cdat, r.fcn)
+colnames(rdat)[2] <- "rsquared"
+fdat<- ldply(cdat, f.fcn)
+colnames(fdat)[2] <- "fstat"
+
+# plot the results 
+ggplot(rdat, aes(x=country, y=rsquared, fill=country)) + 
+  geom_point(lwd=3) + coord_flip() +   guides(fill = F) + 
+  xlab("R squared") + ylab("Country") + ggtitle("R squared by country")
+```
+
+This is not particularly helpful - we can try a density plot instead. 
+
+```{r gapminder-rsq2}
+ggplot(rdat, aes(rsquared)) + geom_density(fill="blue", alpha=0.7) + 
+  ggtitle("R squared by country") + xlab("R squared") + theme_economist()
+```
+
+For a one-variable model, it seems like the majority of the countries' life expectancies are well predicted just by year. Now we can try F-statistics. 
+
+```{r gapminder-f-stat}
+ggplot(fdat, aes(fstat)) + geom_density(fill="lightblue") + 
+  ggtitle("F-statistics by country") + xlab("F-statistic") + theme_economist()
+```
+
+
+## Reflection
+* I tried incorporating a lot of what we learned from the past 3 weeks. Not only did we learn `ldplyr`, there were also lessons on best practices on working with graphs. For example, I finally named all my graphs instead of leaving it as "unnamed-chunk".
+* `tidyr` is a very powerful tool - I can imagine so much time being wasted on data wrangling tasks that can be done with one command, i.e. `gather`. 

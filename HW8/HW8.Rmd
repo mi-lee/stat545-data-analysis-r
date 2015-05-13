@@ -1,0 +1,286 @@
+---
+title: 'Homework 8: Gapminder Data Cleaning'
+author: "Michelle Lee"
+output:
+  html_document:
+    keep_md: yes
+    toc: yes
+---
+```{r, echo=FALSE}
+setwd("/Volumes/DATA/My Documents/Dropbox/STAT-545A/zz_michelle_lee-coursework/HW8")
+```
+
+
+## Loading dirty Gapminder
+
+First, I loaded the libraries and data.
+```{r}
+# Load packages
+library(knitr)
+library(stringr)
+library(plyr)
+suppressPackageStartupMessages(library(dplyr))
+```
+
+### Strip.white
+
+First, I experimented with `strip.white()`, and compared the two datasets using `str`. 
+
+```{r}
+# load uncleaned data
+ddat2 <- read.delim("gapminderDataFiveYear_dirty.txt")
+ddat <- read.delim("gapminderDataFiveYear_dirty.txt", strip.white=T)
+str(ddat2); str(ddat)
+```
+
+THe main difference I can see is that the factor levels are different - with `strip.white`, there are only 148 levels, not 151. To find which levels are not in the `strip.white` dataset:
+
+```{r}
+ddat2$region[!(ddat$region %in% ddat2$region)]
+ddat$region[!(ddat$region %in% ddat2$region)]
+```
+
+This is not entirely unexpected, because `strip.white` probably strips the white space around the region names. Since we would have to do that eventually, `strip.white` is probably a good option to use when importing data!
+
+I also imported the clean dataset for comparison purposes:
+
+```{r}
+# load clean data
+cdat <- read.delim("gapminderDataFiveYear.txt")
+```
+
+## Splitting or merging
+
+I decided to split up the column using string splitting `strsplit`. 
+
+Here's the dirty Gapminder data...
+
+```{r, results='asis'}
+# show top of the dirty dataset
+knitr::kable(head(ddat), format = "markdown")
+```
+
+... and the clean Gapminder data:
+```{r, results='asis'}
+# show top of the clean dataset
+kable(head(cdat), format = "markdown")
+```
+
+Since the clean dataset has separated the country and continent, I split up the region column into 2. 
+
+I split up `region` of the dirty dataset into two, using `strsplit`. 
+
+```{r}
+# split region column into two
+splitCountr<-as.data.frame(matrix(unlist(strsplit(as.character(ddat$region), "_")), ncol=2, byrow=T))
+
+# rename the split columns
+colnames(splitCountr)<- c("continent", "country")
+```
+
+Then we can see the top of the split column:
+
+```{r, results='asis'}
+# show top of the split columns
+kable(head(splitCountr), format = "markdown")
+```
+
+Then, I replaced `region` with the split columns.
+
+```{r, results='asis'}
+ddat<- ddat %>%
+  # get rid of the region column
+  select(-region) %>% 
+  # add the split columns 
+  cbind(splitCountr)
+
+# show top of the head column
+kable(head(ddat), format = "markdown")
+```
+
+We can check to see if the dimensions of the clean and dirty datasets of the country/continents are the same:
+
+```{r}
+dim(as.data.frame(cbind(ddat$continent, ddat$country)))
+dim(as.data.frame(cbind(cdat$continent, cdat$country)))
+```
+
+and to check if they are identical:
+
+```{r}
+identical(as.data.frame(cbind(ddat$continent, ddat$country)), as.data.frame(cbind(cdat$continent, cdat$country)))
+```
+
+They are not. At closer investigation, I realized what I was missing:
+
+```{r}
+levels(ddat$continent)
+levels(cdat$continent)
+```
+
+This leads to the next section, Missing Values:
+
+## Missing values
+
+The goal was to find and fix the "" level within the continents.
+
+```{r}
+ddat %>%
+	filter(continent == "") %>%
+	kable
+```
+
+The error only comes from Canada, which makes fixing this much easier. I can imagine how much more difficult it would be if there were many countries that had errors. 
+
+Fixing it was easy - just replace "" with "Americas". Then I dropped the unused level.
+
+```{r}
+ddat$continent[ddat$continent == ""] <- "Americas"
+ddat$continent <- droplevels(ddat$continent)
+```
+
+Then I checked to make sure everything was identical:
+
+```{r}
+identical(ddat$continent, cdat$continent)
+```
+
+No more missing continents!
+
+## Inconsistent capitalization and spelling
+
+This was the hardest (and most important!) section, as I have never worked with regular expressions before. It took me a lot of experimentation to get used to `grep`.
+
+I fixed inconsistent capitalization first. My first attempt was to look for countries starting with small letters:
+
+```{r}
+grep("^[a-z]", levels(ddat$country), value=T)
+```
+
+However, I knew there had to more more countries that had errors, since working with the Gapminder dataset had got me well acquainted with tricky country names such as Cote d'Ivoire. 
+
+My second attempt: `[ab]` was used to look for non-capitalized words, `\b` was used to look for the pattern at the ends of the words (not strings). 
+
+```{r}
+grep("\\b[a-z]", levels(ddat$country), value=T)
+```
+
+I checked the clean dataset to make sure we don't capitalize the "and"'s. 
+
+```{r}
+grep("\\b[a-z]", levels(cdat$country), value=T)
+```
+
+I then tried to have a `grep` command that did not include of's, and's and other words that are not capitalized. Perhaps a bit overkill for this dataset, but I could imagine needing to know it when working with messier ones in the future.
+
+```{r}
+grep("\\b[a-z][^and][^d'I][^of][^the]", levels(ddat$country), value=T)
+```
+
+I am still mystified why "Democratic Republic of the Congo" is still there. 
+
+But, returning to our task at hand: I used `gsub` to replace the uncapitalized countries. 
+
+```{r}
+ddat$country <- gsub("china", "China", ddat$country)
+ddat$country <- gsub("Central african republic", "Central African Republic", ddat$country)
+```
+
+We can check that it has been replaced successfully - and it has:
+
+```{r}
+unique(ddat$country)[20:30]
+```
+
+### Inconsistent spelling
+
+Now to deal with inconsistent spelling: previous commands showed dupliates such as 
+
+```{r}
+unique(ddat$country)[29:31]
+```
+
+Another mistake I made previously: I forgot that Congo and Democratic Republic of Congo are two different countries! Since these words all have the word "Congo" in common, I used that to replace with the correct spelling (before realizing I erased a country off the dataset). 
+
+The clean dataset indicates that the proper spelling is: 
+
+```{r}
+grep("*Congo", levels(cdat$country), value=T)
+```
+
+Then, I searched for the countries in the dirty dataset that included the word "Congo": 
+```{r}
+grep("*Congo", unique(ddat$country), value=T)
+```
+
+Therefore, we should replace "Democratic Republic of the Congo" to "Congo, Dem. Rep." and so on. 
+
+```{r}
+wrong <- c("Congo, Democratic Republic", "Democratic Republic of the Congo")
+ddat$country[ddat$country %in% wrong] <- "Congo, Dem. Rep."
+```
+
+It is fixed! I tried another way, using gsub only:
+
+```{r}
+ddat$country <- gsub(wrong[1], "Congo, Dem. Rep.", ddat$country)
+ddat$country <- gsub(wrong[2], "Congo, Dem. Rep.", ddat$country)
+grep("*Congo", unique(ddat$country), value=T)
+```
+
+And it is fixed. 
+
+One thing I will try to figure out after this assignment is to use `gsub` to filter through multiple items that have no elements in common. I could imagine it being a painful process if I had to use gsub for every entry that was spelled incorrectly.
+
+I had one more thing to fix:
+
+```{r}
+ddat$country[!(ddat$country %in% cdat$country)]
+cdat$country[!(ddat$country %in% cdat$country)]
+```
+
+This was how I knew I wasn't done yet, but if I had known, I could have used grep:
+
+```{r}
+grep("*Cote", unique(ddat$country), value=T)
+```
+
+I then replaced it with the correct spelling:
+
+```{r}
+ddat$country <- gsub("Cote d'Ivore", "Cote d'Ivoire", ddat$country)
+grep("*Cote", unique(ddat$country), value=T)
+```
+
+And now it is fixed.
+
+
+## Final check
+
+```{r}
+str(ddat); str(cdat)
+identical(ddat$country, cdat$country)
+```
+
+I saw that country was not yet a factor and the columns were unordered, so to wrap up the last details:
+
+```{r}
+ddat$country <- as.factor(ddat$country)
+ddat<-ddat[,c(6,1,2,5,3,4)]
+```
+
+Lastly, final check:
+
+```{r}
+identical(ddat, cdat)
+```
+
+And we are done. 
+
+
+## Summary
+
+* `grep` is a godsend for working with character data. After this assignment I went back to my old datasets and found it extremely easy to use (unlike previous efforts where I had to spell out everything!)
+* having a clean dataset to work towards as a goal made the assignment easier than it would have been in real life. I am certain I would have missed that Cote d'Ivoire was misspelled, or that Congo had two different versions of names, if I couldn't compare it do the clean dataset. I'm still trying to think of a strategy that would ward off these errors in the future.
+* I found terms like `\b` and `\\` hard to remember when I did the `grep` for the countries, and it is very tricky to give exact instructions (capitalize every word, not the entire string) and so on. 
+* extra spacing creates all sorts of havoc in factors, but `strip.white` saved me a lot of time. 

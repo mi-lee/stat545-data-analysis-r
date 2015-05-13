@@ -1,0 +1,397 @@
+country year lifeExp
+Afghanistan 1952 28.801
+Afghanistan 1957 30.332
+Afghanistan 1962 31.997
+Afghanistan 1967 34.02
+Afghanistan 1972 36.088
+Afghanistan 1977 38.438
+Afghanistan 1982 39.854
+Afghanistan 1987 40.822
+Afghanistan 1992 41.674
+Afghanistan 1997 41.763
+Afghanistan 2002 42.129
+Afghanistan 2007 43.828
+Bahrain 1952 50.939
+Bahrain 1957 53.832
+Bahrain 1962 56.923
+Bahrain 1967 59.923
+Bahrain 1972 63.3
+Bahrain 1977 65.593
+Bahrain 1982 69.052
+Bahrain 1987 70.75
+Bahrain 1992 72.601
+Bahrain 1997 73.925
+Bahrain 2002 74.795
+Bahrain 2007 75.635
+Bangladesh 1952 37.484
+Bangladesh 1957 39.348
+Bangladesh 1962 41.216
+Bangladesh 1967 43.453
+Bangladesh 1972 45.252
+Bangladesh 1977 46.923
+Bangladesh 1982 50.009
+Bangladesh 1987 52.819
+Bangladesh 1992 56.018
+Bangladesh 1997 59.412
+Bangladesh 2002 62.013
+Bangladesh 2007 64.062
+Cambodia 1952 39.417
+Cambodia 1957 41.366
+Cambodia 1962 43.415
+Cambodia 1967 45.415
+Cambodia 1972 40.317
+Cambodia 1977 31.22
+Cambodia 1982 50.957
+Cambodia 1987 53.914
+Cambodia 1992 55.803
+Cambodia 1997 56.534
+Cambodia 2002 56.752
+Cambodia 2007 59.723
+China 1952 44
+China 1957 50.54896
+China 1962 44.50136
+China 1967 58.38112
+China 1972 63.11888
+China 1977 63.96736
+China 1982 65.525
+China 1987 67.274
+China 1992 68.69
+China 1997 70.426
+China 2002 72.028
+China 2007 72.961
+Hong Kong, China 1952 60.96
+Hong Kong, China 1957 64.75
+Hong Kong, China 1962 67.65
+Hong Kong, China 1967 70
+Hong Kong, China 1972 72
+Hong Kong, China 1977 73.6
+Hong Kong, China 1982 75.45
+Hong Kong, China 1987 76.2
+Hong Kong, China 1992 77.601
+Hong Kong, China 1997 80
+Hong Kong, China 2002 81.495
+Hong Kong, China 2007 82.208
+India 1952 37.373
+India 1957 40.249
+India 1962 43.605
+India 1967 47.193
+India 1972 50.651
+India 1977 54.208
+India 1982 56.596
+India 1987 58.553
+India 1992 60.223
+India 1997 61.765
+India 2002 62.879
+India 2007 64.698
+Indonesia 1952 37.468
+Indonesia 1957 39.918
+Indonesia 1962 42.518
+Indonesia 1967 45.964
+Indonesia 1972 49.203
+Indonesia 1977 52.702
+Indonesia 1982 56.159
+Indonesia 1987 60.137
+Indonesia 1992 62.681
+Indonesia 1997 66.041
+Indonesia 2002 68.588
+Indonesia 2007 70.65
+Iran 1952 44.869
+Iran 1957 47.181
+Iran 1962 49.325
+Iran 1967 52.469
+Iran 1972 55.234
+Iran 1977 57.702
+Iran 1982 59.62
+Iran 1987 63.04
+Iran 1992 65.742
+Iran 1997 68.042
+Iran 2002 69.451
+Iran 2007 70.964
+Iraq 1952 45.32
+Iraq 1957 48.437
+Iraq 1962 51.457
+Iraq 1967 54.459
+Iraq 1972 56.95
+Iraq 1977 60.413
+Iraq 1982 62.038
+Iraq 1987 65.044
+Iraq 1992 59.461
+Iraq 1997 58.811
+Iraq 2002 57.046
+Iraq 2007 59.545
+Israel 1952 65.39
+Israel 1957 67.84
+Israel 1962 69.39
+Israel 1967 70.75
+Israel 1972 71.63
+Israel 1977 73.06
+Israel 1982 74.45
+Israel 1987 75.6
+Israel 1992 76.93
+Israel 1997 78.269
+Israel 2002 79.696
+Israel 2007 80.745
+Japan 1952 63.03
+Japan 1957 65.5
+Japan 1962 68.73
+Japan 1967 71.43
+Japan 1972 73.42
+Japan 1977 75.38
+Japan 1982 77.11
+Japan 1987 78.67
+Japan 1992 79.36
+Japan 1997 80.69
+Japan 2002 82
+Japan 2007 82.603
+Jordan 1952 43.158
+Jordan 1957 45.669
+Jordan 1962 48.126
+Jordan 1967 51.629
+Jordan 1972 56.528
+Jordan 1977 61.134
+Jordan 1982 63.739
+Jordan 1987 65.869
+Jordan 1992 68.015
+Jordan 1997 69.772
+Jordan 2002 71.263
+Jordan 2007 72.535
+Korea, Dem. Rep. 1952 50.056
+Korea, Dem. Rep. 1957 54.081
+Korea, Dem. Rep. 1962 56.656
+Korea, Dem. Rep. 1967 59.942
+Korea, Dem. Rep. 1972 63.983
+Korea, Dem. Rep. 1977 67.159
+Korea, Dem. Rep. 1982 69.1
+Korea, Dem. Rep. 1987 70.647
+Korea, Dem. Rep. 1992 69.978
+Korea, Dem. Rep. 1997 67.727
+Korea, Dem. Rep. 2002 66.662
+Korea, Dem. Rep. 2007 67.297
+Korea, Rep. 1952 47.453
+Korea, Rep. 1957 52.681
+Korea, Rep. 1962 55.292
+Korea, Rep. 1967 57.716
+Korea, Rep. 1972 62.612
+Korea, Rep. 1977 64.766
+Korea, Rep. 1982 67.123
+Korea, Rep. 1987 69.81
+Korea, Rep. 1992 72.244
+Korea, Rep. 1997 74.647
+Korea, Rep. 2002 77.045
+Korea, Rep. 2007 78.623
+Kuwait 1952 55.565
+Kuwait 1957 58.033
+Kuwait 1962 60.47
+Kuwait 1967 64.624
+Kuwait 1972 67.712
+Kuwait 1977 69.343
+Kuwait 1982 71.309
+Kuwait 1987 74.174
+Kuwait 1992 75.19
+Kuwait 1997 76.156
+Kuwait 2002 76.904
+Kuwait 2007 77.588
+Lebanon 1952 55.928
+Lebanon 1957 59.489
+Lebanon 1962 62.094
+Lebanon 1967 63.87
+Lebanon 1972 65.421
+Lebanon 1977 66.099
+Lebanon 1982 66.983
+Lebanon 1987 67.926
+Lebanon 1992 69.292
+Lebanon 1997 70.265
+Lebanon 2002 71.028
+Lebanon 2007 71.993
+Malaysia 1952 48.463
+Malaysia 1957 52.102
+Malaysia 1962 55.737
+Malaysia 1967 59.371
+Malaysia 1972 63.01
+Malaysia 1977 65.256
+Malaysia 1982 68
+Malaysia 1987 69.5
+Malaysia 1992 70.693
+Malaysia 1997 71.938
+Malaysia 2002 73.044
+Malaysia 2007 74.241
+Mongolia 1952 42.244
+Mongolia 1957 45.248
+Mongolia 1962 48.251
+Mongolia 1967 51.253
+Mongolia 1972 53.754
+Mongolia 1977 55.491
+Mongolia 1982 57.489
+Mongolia 1987 60.222
+Mongolia 1992 61.271
+Mongolia 1997 63.625
+Mongolia 2002 65.033
+Mongolia 2007 66.803
+Myanmar 1952 36.319
+Myanmar 1957 41.905
+Myanmar 1962 45.108
+Myanmar 1967 49.379
+Myanmar 1972 53.07
+Myanmar 1977 56.059
+Myanmar 1982 58.056
+Myanmar 1987 58.339
+Myanmar 1992 59.32
+Myanmar 1997 60.328
+Myanmar 2002 59.908
+Myanmar 2007 62.069
+Nepal 1952 36.157
+Nepal 1957 37.686
+Nepal 1962 39.393
+Nepal 1967 41.472
+Nepal 1972 43.971
+Nepal 1977 46.748
+Nepal 1982 49.594
+Nepal 1987 52.537
+Nepal 1992 55.727
+Nepal 1997 59.426
+Nepal 2002 61.34
+Nepal 2007 63.785
+Oman 1952 37.578
+Oman 1957 40.08
+Oman 1962 43.165
+Oman 1967 46.988
+Oman 1972 52.143
+Oman 1977 57.367
+Oman 1982 62.728
+Oman 1987 67.734
+Oman 1992 71.197
+Oman 1997 72.499
+Oman 2002 74.193
+Oman 2007 75.64
+Pakistan 1952 43.436
+Pakistan 1957 45.557
+Pakistan 1962 47.67
+Pakistan 1967 49.8
+Pakistan 1972 51.929
+Pakistan 1977 54.043
+Pakistan 1982 56.158
+Pakistan 1987 58.245
+Pakistan 1992 60.838
+Pakistan 1997 61.818
+Pakistan 2002 63.61
+Pakistan 2007 65.483
+Philippines 1952 47.752
+Philippines 1957 51.334
+Philippines 1962 54.757
+Philippines 1967 56.393
+Philippines 1972 58.065
+Philippines 1977 60.06
+Philippines 1982 62.082
+Philippines 1987 64.151
+Philippines 1992 66.458
+Philippines 1997 68.564
+Philippines 2002 70.303
+Philippines 2007 71.688
+Saudi Arabia 1952 39.875
+Saudi Arabia 1957 42.868
+Saudi Arabia 1962 45.914
+Saudi Arabia 1967 49.901
+Saudi Arabia 1972 53.886
+Saudi Arabia 1977 58.69
+Saudi Arabia 1982 63.012
+Saudi Arabia 1987 66.295
+Saudi Arabia 1992 68.768
+Saudi Arabia 1997 70.533
+Saudi Arabia 2002 71.626
+Saudi Arabia 2007 72.777
+Singapore 1952 60.396
+Singapore 1957 63.179
+Singapore 1962 65.798
+Singapore 1967 67.946
+Singapore 1972 69.521
+Singapore 1977 70.795
+Singapore 1982 71.76
+Singapore 1987 73.56
+Singapore 1992 75.788
+Singapore 1997 77.158
+Singapore 2002 78.77
+Singapore 2007 79.972
+Sri Lanka 1952 57.593
+Sri Lanka 1957 61.456
+Sri Lanka 1962 62.192
+Sri Lanka 1967 64.266
+Sri Lanka 1972 65.042
+Sri Lanka 1977 65.949
+Sri Lanka 1982 68.757
+Sri Lanka 1987 69.011
+Sri Lanka 1992 70.379
+Sri Lanka 1997 70.457
+Sri Lanka 2002 70.815
+Sri Lanka 2007 72.396
+Syria 1952 45.883
+Syria 1957 48.284
+Syria 1962 50.305
+Syria 1967 53.655
+Syria 1972 57.296
+Syria 1977 61.195
+Syria 1982 64.59
+Syria 1987 66.974
+Syria 1992 69.249
+Syria 1997 71.527
+Syria 2002 73.053
+Syria 2007 74.143
+Taiwan 1952 58.5
+Taiwan 1957 62.4
+Taiwan 1962 65.2
+Taiwan 1967 67.5
+Taiwan 1972 69.39
+Taiwan 1977 70.59
+Taiwan 1982 72.16
+Taiwan 1987 73.4
+Taiwan 1992 74.26
+Taiwan 1997 75.25
+Taiwan 2002 76.99
+Taiwan 2007 78.4
+Thailand 1952 50.848
+Thailand 1957 53.63
+Thailand 1962 56.061
+Thailand 1967 58.285
+Thailand 1972 60.405
+Thailand 1977 62.494
+Thailand 1982 64.597
+Thailand 1987 66.084
+Thailand 1992 67.298
+Thailand 1997 67.521
+Thailand 2002 68.564
+Thailand 2007 70.616
+Vietnam 1952 40.412
+Vietnam 1957 42.887
+Vietnam 1962 45.363
+Vietnam 1967 47.838
+Vietnam 1972 50.254
+Vietnam 1977 55.764
+Vietnam 1982 58.816
+Vietnam 1987 62.82
+Vietnam 1992 67.662
+Vietnam 1997 70.672
+Vietnam 2002 73.017
+Vietnam 2007 74.249
+West Bank and Gaza 1952 43.16
+West Bank and Gaza 1957 45.671
+West Bank and Gaza 1962 48.127
+West Bank and Gaza 1967 51.631
+West Bank and Gaza 1972 56.532
+West Bank and Gaza 1977 60.765
+West Bank and Gaza 1982 64.406
+West Bank and Gaza 1987 67.046
+West Bank and Gaza 1992 69.718
+West Bank and Gaza 1997 71.096
+West Bank and Gaza 2002 72.37
+West Bank and Gaza 2007 73.422
+Yemen, Rep. 1952 32.548
+Yemen, Rep. 1957 33.97
+Yemen, Rep. 1962 35.18
+Yemen, Rep. 1967 36.984
+Yemen, Rep. 1972 39.848
+Yemen, Rep. 1977 44.175
+Yemen, Rep. 1982 49.113
+Yemen, Rep. 1987 52.922
+Yemen, Rep. 1992 55.599
+Yemen, Rep. 1997 58.02
+Yemen, Rep. 2002 60.308
+Yemen, Rep. 2007 62.698
